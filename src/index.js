@@ -1,219 +1,125 @@
+// Based on https://www.jasondavies.com/poisson-disc/
 /**
- * Exocraft (https://exocraft.io)
- * Copyright (c) 2017 - 2018, GoldFire Studios, Inc.
- * http://goldfirestudios.com
+ * A fast poison disc sampler.
  */
-
-// const {distanceFrom} = require('./index.js');
-const {libnoise} = require('libnoise');
-const Mersenne = require('mersenne-twister');
-
-/**
- * Get distance between points, optionally accounting for the wrapping of the world.
- * @param  {Number} x1    Target vector x.
- * @param  {Number} y1    Target vector y.
- * @param  {Number} x2    Starting position x.
- * @param  {Number} y2    Starting position y.
- * @param  {Number} limit Optional. Width/height of the world.
- * @return {Number}       Distance.
- */
-const distanceFrom = (x1, y1, x2, y2, limit) => {
-  let x = Math.abs(x1 - x2);
-  if (x > limit / 2) {
-    x = limit - x;
-  }
-
-  let y = Math.abs(y1 - y2);
-  if (y > limit / 2) {
-    y = limit - y;
-  }
-
-  return Math.sqrt((x * x) + (y * y));
-};
-
-/**
- * PoissonDiskSampler
- */
-class PoissonDiskSampler {
+class PoissonDiscSampler {
   /**
-   * @param {Number} [seed=42]
-   * @param {Number} [h=640] Height of sampler.
-   * @param {Number} [w=640] Width of sampler.
-   * @param {Number} [k=500] Times to retry point placement.
-   * @param {Number} [r=10] Radius to not place points within.
-   * @param {Number} [maxPoints=500]
-   * @param {Number} [floorValue=0.5] Floor of noise to ignore points below.
-   * @return {Object}
+   * constructor
+   *
+   * @param {Number} width The width of the sample space.
+   * @param {Number} height The height of the sample space.
+   * @param {Number} x The offset from "world" center (if you're using multiple samplers).
+   * @param {Number} y The offset from the world center.
+   * @param {Number} radius The minimum radius between points.
    */
-  constructor({
-    seed = 42,
-    h = 640,
-    w = 640,
-    k = 10,
-    r = 10,
-    maxPoints = 20,
-    floorValue = 0.5,
-    noiseWeight = 4,
-    noiseConfig,
-  }) {
-    this.seed = seed;
-
-    noiseConfig = {
-      freq: noiseConfig.freq || 0.01,
-      luna: noiseConfig.luna || 1,
-      persistance: noiseConfig.persistance || 0.5,
-      octaves: noiseConfig.octaves || 2,
-    };
-
-    this.noise = new libnoise.generator.Perlin(
-      noiseConfig.freq,
-      noiseConfig.luna,
-      noiseConfig.persistance,
-      noiseConfig.octaves,
-      this.seed,
-      libnoise.QualityMode.MEDIUM
-    );
-
-    this.rng = new Mersenne(this.seed);
-    Object.assign(this, {
-      h,
-      w,
-      k,
-      r,
-      maxPoints,
-      floorValue,
-      noiseWeight,
-    });
-
-    this.getPosHash = (x, y) => ((y & 0xFFFF) << 16) | (x & 0xFFFF);
-    this.memoizedNoise = {};
-  }
-
-  /**
-   * Create a set of points within w,h starting at x,y. 
-   * @param {Number} [x=0]
-   * @param {Number} [y=0]
-   * @param {Number} [seed=0]
-   * @return {Array} points
-   */
-  createPoints({x, y} = {x: 0, y: 0}, seed) {
+  constructor(width, height, x, y, radius) {
+    this.width = width;
+    this.height = height;
     this.x = x;
     this.y = y;
-    this.minX = (this.x + this.r);
-    this.maxX = ((this.x + this.w) - this.r);
-    this.minY = (this.y + this.r);
-    this.maxY = ((this.y + this.h) - this.r);
+    this.k = 100; // maximum number of samples before rejection
+    this.radius2 = radius * radius;
+    this.R = 3 * this.radius2;
+    this.cellSize = radius * Math.SQRT1_2;
+    this.gridWidth = Math.ceil(width / this.cellSize);
+    this.gridHeight = Math.ceil(height / this.cellSize);
+    this.grid = new Array(this.gridWidth * this.gridHeight);
+    this.queue = [];
+    this.queueSize = 0;
+    this.sampleSize = 0;
 
-    if (seed) {
-      this.rng.init_seed(seed);
-    }
-
-    let failed = 0;
-    let point = this._createFirst();
-    const points = [];
-    points.push(point);
-
-    while (points.length < this.maxPoints && failed < this.k) {
-      point = this._createAround(point);
-      if (this._hitTest(point, points)) {
-        points.push(point);
-        failed = 0;
-      } else {
-        failed += 1;
-      }
-    }
-
-    return points.filter((p) => {
-      return this.noise ? this._getRandom(p.x, p.y) < this.floorValue : true;
-    });
+    // TODO: Seed with x,y hash.
+    this.rng = new MersenneTwister();
   }
 
-  /**
-   * Check if point is far enough from other points. 
-   * @param {Object} point
-   * @param {Array} points
-   * @return {Boolean}
-   */
-  _hitTest(point, points) {
-    let p;
+  getPoints() {
+    this.rng.init_seed(64 + (this.x + 1 + Math.pow((this.y + 1), 2)));
+    for (var i = 0; i < 1000; i++) {
+      this.run();
+    }
 
-    for (let i = 0; i < points.length; i += 1) {
-      p = points[i];
-      if (distanceFrom(p.x, p.y, point.x, point.y) < p.r + point.r) {
-        return false;
+    return this.grid.filter(p => p).map(p => [p[0] + this.x, p[1] + this.y]);
+  }
+
+  run() {
+    if (!this.sampleSize) {
+      let x = this.rng.random() * this.width;
+      let y = this.rng.random() * this.height;
+      return this.sample(x, y);
+    }
+
+    // Pick a random existing sample and remove it from the queue.
+    while (this.queueSize) {
+      var i = (this.rng.random() * this.queueSize) | 0,
+        s = this.queue[i];
+
+      // Make a new candidate between [radius, 2 * radius] from the existing sample.
+      for (var j = 0; j < this.k; ++j) {
+        var a = 2 * Math.PI * this.rng.random(),
+          r = Math.sqrt(this.rng.random() * this.R + this.radius2),
+          x = s[0] + r * Math.cos(a),
+          y = s[1] + r * Math.sin(a),
+          cc = this.cellSize / 2;
+
+        // Reject candidates that are outside the allowed extent,
+        // or closer than 2 * radius to any existing sample.
+        if (
+          cc < x &&
+          x < this.width - cc &&
+          cc < y &&
+          y < this.height - cc &&
+          this.far(x, y)
+        ) {
+          return this.sample(x, y);
+        }
+      }
+
+      this.queue[i] = this.queue[--this.queueSize];
+      this.queue.length = this.queueSize;
+    }
+  }
+
+  far(x, y) {
+    let i = (x / this.cellSize) | 0;
+    let j = (y / this.cellSize) | 0;
+
+    const i0 = Math.max(i - 2, 0);
+    const j0 = Math.max(j - 2, 0);
+    const i1 = Math.min(i + 3, this.gridWidth);
+    const j1 = Math.min(j + 3, this.gridHeight);
+
+    for (j = j0; j < j1; ++j) {
+      let o = j * this.gridWidth;
+      let s;
+      for (i = i0; i < i1; ++i) {
+        s = this.grid[o + i];
+        if (s) {
+          let dx = s[0] - x;
+          let dy = s[1] - y;
+          if (dx * dx + dy * dy < this.radius2) {
+            return false;
+          }
+        }
       }
     }
 
     return true;
   }
 
-  /**
-   * @return {undefined}
-   */
-  _createFirst() {
-    const x = this._intBetween(this.minX, this.maxX);
-    const y = this._intBetween(this.minY, this.maxY);
-    const r = this._getRadius(x, y);
-    return {x, y, r};
+  xyToIndex(x, y) {
+    return (
+      this.gridWidth * ((y / this.cellSize) | 0) + ((x / this.cellSize) | 0)
+    );
   }
 
-  /**
-   * @param {Object} point
-   * @return {undefined}
-   */
-  _createAround(point) {
-    const rand = this.rng.random();
-    const radius = point.r * 2;
-    const a = Math.PI * 2 * rand;
-
-    const x = point.x + (radius * Math.cos(a));
-    const y = point.y + (radius * Math.sin(a));
-
-    return {
-      x: x > this.minX && x < this.maxX ? x : this._intBetween(this.minX, this.maxX),
-      y: y > this.minY && y < this.maxY ? y : this._intBetween(this.minY, this.maxY),
-      r: radius,
-    };
-  }
-
-  /**
-   * Get a random radius from x,y. 
-   * @param {Number} x
-   * @param {Number} y
-   * @return {Number}
-   */
-  _getRadius(x, y) {
-    return (this._getRandom(x, y) * this.r * this.noiseWeight) + (this.r);
-  }
-
-  /**
-   * Get a random number from perlin noise or from the RNG if no noise supplied. 
-   * @param {Number} x
-   * @param {Number} y
-   * @return {Number}
-   */
-  _getRandom(x, y) {
-    if (this.noise) {
-      const hash = this.getPosHash(x, y);
-      if (this.memoizedNoise[hash]) {
-        return this.memoizedNoise[hash];
-      }
-      const noiseValue = (this.noise.getValue(x, y, 0) + 1) / 2;
-      this.memoizedNoise[hash] = noiseValue > 0 ? noiseValue : 0;
-      return this.memoizedNoise[hash];
-    }
-    return this.rng.random();
-  }
-
-  /**
-   * Get a random int between two numbers, from seeded rng. 
-   * @param {Number} min
-   * @param {Number} max
-   * @return {Number}
-   */
-  _intBetween(min, max) {
-    return Math.floor((this.rng.random() * ((max - min) + 1)) + min);
+  sample(x, y) {
+    var point = [x, y];
+    this.queue.push(point);
+    this.grid[this.xyToIndex(x, y)] = point;
+    ++this.sampleSize;
+    ++this.queueSize;
+    return point;
   }
 }
 
-module.exports = PoissonDiskSampler;
+module.exports = PoissonDiscSampler;
