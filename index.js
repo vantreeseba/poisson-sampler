@@ -149,6 +149,19 @@ class PoissonDiscSampler {
     ++this.queueSize;
     return point;
   }
+
+  /**
+   * Remove a sample from the grid.
+   * It will be replaced with new one the next time get points is called.
+   *
+   * @param {Number} x The x coord.
+   * @param {Number} y The y coord.
+   */
+  remove(x, y) {
+    delete this.grid[this.xyToIndex(x, y)];
+    this.sampleSize = 0;
+  }
+
 }
 
 module.exports = PoissonDiscSampler;
