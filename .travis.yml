@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "node"
+cache:
+  directories:
+  - node_modules
+deploy:
+  provider: npm
+  email: vantreeseba@gmail.com
+  api_key:
+    secure: XFOrxJFMDdOVA0WLKIgb3X8mBe3DoOmQO4Q662ofQPru4qAisFJAesjNdBU+Crqm9j/tSUx7jIobEedOXegqowAxHfEjy25XzUfduYyaeMXsXHyy1aPvSauXmVnLD6EnUECPBth+pYaFGztnG70BcpZrskwYD91xzLo4VWllg2o=
+  on:
+    tags: true
+    repo: vantreeseba/poisson-sampler
