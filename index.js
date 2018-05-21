@@ -1,6 +1,8 @@
-// Based on https://www.jasondavies.com/poisson-disc/
+const MersenneTwister = require('mersenne-twister');
+
 /**
  * A fast poison disc sampler.
+ * Based on https://www.jasondavies.com/poisson-disc/
  */
 class PoissonDiscSampler {
   /**
@@ -9,38 +11,46 @@ class PoissonDiscSampler {
    * @param {Number} width The width of the sample space.
    * @param {Number} height The height of the sample space.
    * @param {Number} x The offset from "world" center (if you're using multiple samplers).
-   * @param {Number} y The offset from the world center.
+   * @param {Number} y The offset from world center.
    * @param {Number} radius The minimum radius between points.
    */
-  constructor(width, height, x, y, radius) {
-    this.width = width;
-    this.height = height;
-    this.x = x;
-    this.y = y;
+  constructor({w, h, x, y, r} = {w:64, h:64, x:0, y:0, r:10}) {
+    this.r = r || 10;
+    this.width = w || 64;
+    this.height = h || 64;
+    this.x = x || 0;
+    this.y = y || 0;
     this.k = 100; // maximum number of samples before rejection
-    this.radius2 = radius * radius;
+    this.radius2 = this.r * this.r;
     this.R = 3 * this.radius2;
-    this.cellSize = radius * Math.SQRT1_2;
-    this.gridWidth = Math.ceil(width / this.cellSize);
-    this.gridHeight = Math.ceil(height / this.cellSize);
+    this.cellSize = this.r * Math.SQRT1_2;
+    this.gridWidth = Math.ceil(this.width / this.cellSize);
+    this.gridHeight = Math.ceil(this.height / this.cellSize);
     this.grid = new Array(this.gridWidth * this.gridHeight);
     this.queue = [];
     this.queueSize = 0;
     this.sampleSize = 0;
 
-    // TODO: Seed with x,y hash.
     this.rng = new MersenneTwister();
+    this.rng.init_seed((this.x + 1 + Math.pow((this.y + 1), 2)));
   }
 
+  /**
+   * Get all sample points from sampler.
+   * @return {Array} An array of points.
+   */
   getPoints() {
-    this.rng.init_seed(64 + (this.x + 1 + Math.pow((this.y + 1), 2)));
-    for (var i = 0; i < 1000; i++) {
+    const maxPoints = this.gridHeight * this.gridWidth;
+    for (var i = 0; i < maxPoints; i++) {
       this.run();
     }
 
     return this.grid.filter(p => p).map(p => [p[0] + this.x, p[1] + this.y]);
   }
 
+  /**
+   * Runs the sampler.
+   */
   run() {
     if (!this.sampleSize) {
       let x = this.rng.random() * this.width;
@@ -79,6 +89,12 @@ class PoissonDiscSampler {
     }
   }
 
+  /**
+   * far
+   *
+   * @param {Number} x
+   * @param {Number} y
+   */
   far(x, y) {
     let i = (x / this.cellSize) | 0;
     let j = (y / this.cellSize) | 0;
@@ -106,12 +122,25 @@ class PoissonDiscSampler {
     return true;
   }
 
+  /**
+   * Get an index into the grid based from the x,y coord.
+   * @param {Number} x The x coord.
+   * @param {Number} y The y coord.
+   * @return {Number} The index into the grid array.
+   */
   xyToIndex(x, y) {
     return (
       this.gridWidth * ((y / this.cellSize) | 0) + ((x / this.cellSize) | 0)
     );
   }
 
+  /**
+   * Record a sample.
+   *
+   * @param {Number} x The x coord of the sample.
+   * @param {Number} y The y coord of the sample.
+   * @return {Object} The point sampled.
+   */
   sample(x, y) {
     var point = [x, y];
     this.queue.push(point);
