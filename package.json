@@ -20,6 +20,9 @@
       "quiet": true
     }
   },
+  "nyc": {
+    "exclude": ["docs", "test"]
+  },
   "scripts": {
     "watch": "npm-watch test",
     "test": "nyc -r text --all mocha -u exports",
