@@ -110,6 +110,15 @@ class MultiSampler {
     this.buildSamplers();
     this.dirty = true;
   }
+
+  /**
+   * Prepopulates all the sub-samplers with the given points,
+   * rejecting ones outside the subsamplers.
+   * @param {Array} points The points to seed subsamplers with.
+   */
+  prePopulate(points) {
+    this.cellSamplers.forEach(s => s.prePopulate(points));
+  }
 }
 
 module.exports = MultiSampler;

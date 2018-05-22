@@ -16,6 +16,12 @@ module.exports = {
 
       assert.isAtLeast(points.length, 1);
     },
+    'Should return some points with negative x,y': () => {
+      const sampler = new Sampler({x:-64, y:-64});
+      const points = sampler.getPoints();
+
+      assert.isAtLeast(points.length, 1);
+    },
     'All points should be at least R distance apart.': () => {
       const r = 100;
       const sampler = new Sampler({h: 800, w: 800, r});
@@ -62,7 +68,52 @@ module.exports = {
       assert.isTrue(allGood);
       assert.isAtLeast(points.length, 20);
     },
+    'Prepopulate should seed the sampler with existing points': () => {
+      const prepoints = [{x:1, y:1}];
 
+      const r = 100;
+      const sampler = new Sampler({h: 800, w: 800, r});
+      sampler.prePopulate(prepoints);
+      const points = sampler.getPoints();
+      let allGood = true;
+
+      points.forEach(p => {
+        points.forEach(p2 => {
+          if(p !== p2) {
+            if (distanceFrom(p.x, p.y, p2.x, p2.y) < r) {
+              allGood = false;
+            }
+          }
+        });
+      });
+
+      assert.isTrue(allGood);
+      assert.isAtLeast(points.length, 20);
+      assert.isOk(points.find(p => p[0] === prepoints[0].x && p[1] === prepoints[0].y));
+    },
+    'Prepopulate should reject points outside the sampler': () => {
+      const prepoints = [{x:-1, y:-1}];
+
+      const r = 100;
+      const sampler = new Sampler({h: 800, w: 800, r});
+      sampler.prePopulate(prepoints);
+      const points = sampler.getPoints();
+      let allGood = true;
+
+      points.forEach(p => {
+        points.forEach(p2 => {
+          if(p !== p2) {
+            if (distanceFrom(p.x, p.y, p2.x, p2.y) < r) {
+              allGood = false;
+            }
+          }
+        });
+      });
+
+      assert.isTrue(allGood);
+      assert.isAtLeast(points.length, 20);
+      assert.isUndefined(points.find(p => p[0] === prepoints[0].x && p[1] === prepoints[0].y));
+    }
 
   },
 };

@@ -16,16 +16,16 @@ class PoissonDiscSampler {
    */
   constructor({w, h, x, y, r} = {w:64, h:64, x:0, y:0, r:10}) {
     this.r = r || 10;
-    this.width = w || 64;
-    this.height = h || 64;
+    this.w = w || 64;
+    this.h = h || 64;
     this.x = x || 0;
     this.y = y || 0;
     this.k = 100; // maximum number of samples before rejection
     this.radius2 = this.r * this.r;
     this.R = 3 * this.radius2;
     this.cellSize = this.r * Math.SQRT1_2;
-    this.gridWidth = Math.ceil(this.width / this.cellSize);
-    this.gridHeight = Math.ceil(this.height / this.cellSize);
+    this.gridWidth = Math.ceil(this.w / this.cellSize);
+    this.gridHeight = Math.ceil(this.h / this.cellSize);
     this.grid = new Array(this.gridWidth * this.gridHeight);
     this.queue = [];
     this.queueSize = 0;
@@ -53,8 +53,8 @@ class PoissonDiscSampler {
    */
   run() {
     if (!this.sampleSize) {
-      let x = this.rng.random() * this.width;
-      let y = this.rng.random() * this.height;
+      let x = this.rng.random() * this.w;
+      let y = this.rng.random() * this.h;
       return this.sample(x, y);
     }
 
@@ -75,9 +75,9 @@ class PoissonDiscSampler {
         // or closer than 2 * radius to any existing sample.
         if (
           cc < x &&
-          x < this.width - cc &&
+          x < this.w - cc &&
           cc < y &&
-          y < this.height - cc &&
+          y < this.h - cc &&
           this.far(x, y)
         ) {
           return this.sample(x, y);
@@ -162,6 +162,24 @@ class PoissonDiscSampler {
   remove(x, y) {
     delete this.grid[this.xyToIndex(x, y)];
     this.sampleSize = 0;
+  }
+
+  /**
+   * Pre-populate the sampler with points.
+   * @param {Array} points The points to add to the sampler.
+   */
+  prePopulate(points) {
+    points.forEach(p => {
+      const inside = Array.isArray(p) ?
+        p[0] >= this.x && p[0] <= this.x + this.w && p[1] >= this.y && p[1] <= this.h + this.y :
+        p.x >= this.x && p.x <= this.x + this.w && p.y >= this.y && p.y <= this.h + this.y;
+
+      if(inside) {
+        Array.isArray(p) ?
+          this.sample(p[0] - this.x, p[1] - this.y) :
+          this.sample(p.x - this.x, p.y - this.y);
+      }
+    });
   }
 }
 

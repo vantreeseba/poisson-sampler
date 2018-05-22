@@ -56,7 +56,27 @@ module.exports = {
         sampler.resize(32, 32);
         assert.equal(sampler.cellSamplers.length, 4);
       },
-
     },
+    'prePopulate': {
+      'should seed the sampler with given points': () => {
+        const existing = [[1, 1]];
+        const sampler = new Sampler();
+        sampler.prePopulate(existing);
+        const points = sampler.getPoints();
+
+        assert.isAtLeast(points.length, 20);
+        assert.isOk(points.find(p => p[0] === 1 && p[1] === 1));
+      },
+      'should reject points outside of sampler space': () => {
+        const existing = [[-1000, 1]];
+        const sampler = new Sampler();
+        sampler.prePopulate(existing);
+        const points = sampler.getPoints();
+
+        assert.isAtLeast(points.length, 20);
+        assert.isUndefined(points.find(p => p[0] === -1000 && p[1] === 1));
+      }
+
+    }
   },
 };
