@@ -87,6 +87,19 @@ class MultiSampler {
 
     return sampler.getPoints();
   }
+
+  /**
+   * Resize the multisampler.
+   * @param {Number} h New height.
+   * @param {Number} w New width.
+   */
+  resize(h, w) {
+    this.w = w;
+    this.h = h;
+
+    this.buildSamplers();
+    this.dirty = true;
+  }
 }
 
 module.exports = MultiSampler;

@@ -43,5 +43,13 @@ module.exports = {
         assert.isAtLeast(points.length, 5);
       },
     },
+    'resize': {
+      'Should rebuild sampler list': () => {
+        const sampler = new Sampler({w: 32, h: 32, cw: 16, ch: 16, r: 4});
+        assert.equal(sampler.cellSamplers.length, 4);
+        sampler.resize(64, 64);
+        assert.equal(sampler.cellSamplers.length, 16);
+      },
+    },
   },
 };
