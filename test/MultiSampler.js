@@ -50,6 +50,13 @@ module.exports = {
         sampler.resize(64, 64);
         assert.equal(sampler.cellSamplers.length, 16);
       },
+      'Should remove samplers outside new size': () => {
+        const sampler = new Sampler({w: 64, h: 64, cw: 16, ch: 16, r: 4});
+        assert.equal(sampler.cellSamplers.length, 16);
+        sampler.resize(32, 32);
+        assert.equal(sampler.cellSamplers.length, 4);
+      },
+
     },
   },
 };

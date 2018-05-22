@@ -33,8 +33,11 @@ class MultiSampler {
   buildSamplers() {
     this.cellSamplers = this.cellSamplers || [];
 
-    for(let x = 0; x < this.w; x+= this.cw){
-      for(let y = 0; y < this.h; y+= this.ch){
+    const hw = (this.w/2) | 0;
+    const hh = (this.h/2) | 0;
+
+    for(let x = -hw; x < hw; x+= this.cw){
+      for(let y = -hh; y < hh; y+= this.ch){
         if(!this.cellSamplers.find(s => s.x === x && s.y === y)){
           this.cellSamplers.push(new Sampler({
             w: this.cw,
@@ -44,6 +47,13 @@ class MultiSampler {
             y,
           }));
         }
+      }
+    }
+
+    for(var i = this.cellSamplers.length - 1; i >= 0; i--) {
+      const cur = this.cellSamplers[i];
+      if(cur.x < -hw || cur.x >= hw || cur.y < -hh || cur.y >= hh) {
+        this.cellSamplers.splice(i, 1);
       }
     }
   }
