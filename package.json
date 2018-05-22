@@ -26,7 +26,8 @@
   "scripts": {
     "watch": "npm-watch test",
     "test": "nyc -r text --all mocha -u exports",
-    "precommit": "npm run test"
+    "precommit": "npm run test",
+    "build-readme": "jsdoc2md -t README.hbs -f *.js > README.md"
   },
   "author": "vantreeseba@gmail.com",
   "license": "MIT",
