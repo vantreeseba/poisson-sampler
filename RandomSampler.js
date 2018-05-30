@@ -4,7 +4,7 @@ const MersenneTwister = require('mersenne-twister');
  * A fast poison disc sampler.
  * Based on https://www.jasondavies.com/poisson-disc/
  */
-class PoissonDiscSampler {
+class RandomSampler {
   /**
    * constructor
    *
@@ -20,7 +20,7 @@ class PoissonDiscSampler {
     this.h = h || 64;
     this.x = x || 0;
     this.y = y || 0;
-    this.k = 50; // maximum number of samples before rejection
+    this.k = 100; // maximum number of samples before rejection
     this.radius2 = this.r * this.r;
     this.R = 3 * this.radius2;
     this.cellSize = this.r * Math.SQRT1_2;
@@ -40,7 +40,7 @@ class PoissonDiscSampler {
    * @return {Array} An array of points.
    */
   getPoints() {
-    const maxPoints = this.gridWidth * this.gridHeight;
+    const maxPoints = this.gridHeight * this.gridWidth;
     for (var i = 0; i < maxPoints; i++) {
       this.run();
     }
@@ -52,40 +52,17 @@ class PoissonDiscSampler {
    * Runs the sampler.
    */
   run() {
-    if (!this.sampleSize) {
+    let kk = 0;
+    while(kk < 100){
       let x = this.rng.random() * this.w;
       let y = this.rng.random() * this.h;
-      return this.sample(x, y);
-    }
-
-    // Pick a random existing sample and remove it from the queue.
-    while (this.queueSize) {
-      var i = (this.rng.random() * this.queueSize) | 0,
-        s = this.queue[i];
-
-      // Make a new candidate between [radius, 2 * radius] from the existing sample.
-      for (var j = 0; j < this.k; ++j) {
-        var a = 2 * Math.PI * this.rng.random(),
-          r = Math.sqrt(this.rng.random() * this.R + this.radius2),
-          x = s[0] + r * Math.cos(a),
-          y = s[1] + r * Math.sin(a),
-          cc = this.cellSize / 2;
-
-        // Reject candidates that are outside the allowed extent,
-        // or closer than 2 * radius to any existing sample.
-        if (
-          cc < x &&
-          x < this.w - cc &&
-          cc < y &&
-          y < this.h - cc &&
-          this.far(x, y)
-        ) {
-          return this.sample(x, y);
-        }
+      kk++;
+      
+      let far = this.far(x,y);
+      let s = this.sample(x, y);
+      if(s && far) {
+        return s;
       }
-
-      this.queue[i] = this.queue[--this.queueSize];
-      this.queue.length = this.queueSize;
     }
   }
 
@@ -104,14 +81,16 @@ class PoissonDiscSampler {
     const j0 = Math.max(j - 2, 0);
     const i1 = Math.min(i + 3, this.gridWidth);
     const j1 = Math.min(j + 3, this.gridHeight);
-
+    let dx, dy;
+    
     for (j = j0; j < j1; ++j) {
       let o = j * this.gridWidth;
+      let s;
       for (i = i0; i < i1; ++i) {
-        let s = this.grid[o + i];
+        s = this.grid[o + i];
         if (s) {
-          let dx = s[0] - x;
-          let dy = s[1] - y;
+          dx = s[0] - x;
+          dy = s[1] - y;
           if (dx * dx + dy * dy < this.radius2) {
             return false;
           }
@@ -143,6 +122,9 @@ class PoissonDiscSampler {
    * @return {Object} The point sampled.
    */
   sample(x, y) {
+    if(this.grid[this.xyToIndex(x, y)]) {
+      return;
+    }
     var point = [x, y];
     this.queue.push(point);
     this.grid[this.xyToIndex(x, y)] = point;
@@ -182,4 +164,4 @@ class PoissonDiscSampler {
   }
 }
 
-module.exports = PoissonDiscSampler;
+module.exports = RandomSampler;

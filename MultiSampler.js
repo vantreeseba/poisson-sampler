@@ -1,4 +1,5 @@
 const Sampler = require('./Sampler');
+const RandomSampler = require('./RandomSampler');
 
 /**
  * A poisson sampler that is a grid of samplers (this allows infinite worlds to use this).
@@ -13,7 +14,7 @@ class MultiSampler {
    * @param {Number} ch The height of each subsampler.
    * @param {Number} r The minimum radius between samples.
    */
-  constructor({w, h, cw, ch, r} = {w:64, h:64, cw:32, ch:32, r:10}) {
+  constructor({w, h, cw, ch, r, useRandom} = {w:64, h:64, cw:32, ch:32, r:10, useRandom: false}) {
     this.w = w || 64;
     this.h = h || 64;
     this.cw = cw || 32;
@@ -21,6 +22,8 @@ class MultiSampler {
     this.r = r;
 
     this.dirty = true;
+
+    this.samplerConstructor = useRandom ? RandomSampler : Sampler;
 
     this.buildSamplers();
     this.points = [];
@@ -39,7 +42,7 @@ class MultiSampler {
     for(let x = -hw; x < hw; x+= this.cw){
       for(let y = -hh; y < hh; y+= this.ch){
         if(!this.cellSamplers.find(s => s.x === x && s.y === y)){
-          this.cellSamplers.push(new Sampler({
+          this.cellSamplers.push(new this.samplerConstructor({
             w: this.cw,
             h: this.ch,
             r: this.r,
@@ -84,7 +87,7 @@ class MultiSampler {
   getPointsForCell(x, y) {
     let sampler = this.cellSamplers.find(s => s.x === x && s.y === y);
     if(!sampler) {
-      sampler = new Sampler({
+      sampler = new this.samplerConstructor({
         w: this.cw,
         h: this.ch,
         r: this.r,

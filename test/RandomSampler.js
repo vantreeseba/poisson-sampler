@@ -1,9 +1,9 @@
 const {assert} = require('chai');
-const Sampler = require('../Sampler');
+const Sampler = require('../RandomSampler');
 const distanceFrom = require('../utils').distanceFrom;
 
 module.exports = {
-  Sampler: {
+  RandomSampler: {
     'Should return some points': () => {
       const sampler = new Sampler();
       const points = sampler.getPoints();
