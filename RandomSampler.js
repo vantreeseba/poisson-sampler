@@ -8,11 +8,12 @@ class RandomSampler {
   /**
    * constructor
    *
-   * @param {Number} width The width of the sample space.
-   * @param {Number} height The height of the sample space.
-   * @param {Number} x The offset from "world" center (if you're using multiple samplers).
-   * @param {Number} y The offset from world center.
-   * @param {Number} radius The minimum radius between points.
+   * @param {Object} config The config for the sampler.
+   * @param {Number} config.w The width of the sample space.
+   * @param {Number} config.h The height of the sample space.
+   * @param {Number} config.x The offset from "world" center (if you're using multiple samplers).
+   * @param {Number} config.y The offset from world center.
+   * @param {Number} config.r The minimum radius between points.
    */
   constructor({w, h, x, y, r} = {w:64, h:64, x:0, y:0, r:10}) {
     this.r = r || 10;
@@ -57,8 +58,8 @@ class RandomSampler {
       let x = this.rng.random() * this.w;
       let y = this.rng.random() * this.h;
       kk++;
-      
-      let far = this.far(x,y);
+
+      let far = this.far(x, y);
       let s = this.sample(x, y);
       if(s && far) {
         return s;
@@ -82,7 +83,7 @@ class RandomSampler {
     const i1 = Math.min(i + 3, this.gridWidth);
     const j1 = Math.min(j + 3, this.gridHeight);
     let dx, dy;
-    
+
     for (j = j0; j < j1; ++j) {
       let o = j * this.gridWidth;
       let s;

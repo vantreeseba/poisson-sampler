@@ -26,7 +26,7 @@ A poisson sampler that is a grid of samplers (this allows infinite worlds to use
 **Kind**: global class  
 
 * [MultiSampler](#MultiSampler)
-    * [new MultiSampler(w, h, cw, ch, r)](#new_MultiSampler_new)
+    * [new MultiSampler(config)](#new_MultiSampler_new)
     * [.getPoints()](#MultiSampler+getPoints) ⇒ <code>Array</code>
     * [.getPointsForCell(x, y)](#MultiSampler+getPointsForCell) ⇒ <code>Array</code>
     * [.resize(h, w)](#MultiSampler+resize)
@@ -34,17 +34,18 @@ A poisson sampler that is a grid of samplers (this allows infinite worlds to use
 
 <a name="new_MultiSampler_new"></a>
 
-### new MultiSampler(w, h, cw, ch, r)
+### new MultiSampler(config)
 Create a multisampler.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| w | <code>Number</code> | The width of the entire sample space. |
-| h | <code>Number</code> | The height of the entire sample space. |
-| cw | <code>Number</code> | The width of each sub sampler. |
-| ch | <code>Number</code> | The height of each subsampler. |
-| r | <code>Number</code> | The minimum radius between samples. |
+| config | <code>Object</code> | The config for the sampler. |
+| config.w | <code>Number</code> | The width of the entire sample space. |
+| config.h | <code>Number</code> | The height of the entire sample space. |
+| config.cw | <code>Number</code> | The width of each sub sampler. |
+| config.ch | <code>Number</code> | The height of each subsampler. |
+| config.r | <code>Number</code> | The minimum radius between samples. |
 
 <a name="MultiSampler+getPoints"></a>
 
@@ -99,7 +100,7 @@ Based on https://www.jasondavies.com/poisson-disc/
 **Kind**: global class  
 
 * [RandomSampler](#RandomSampler)
-    * [new RandomSampler(width, height, x, y, radius)](#new_RandomSampler_new)
+    * [new RandomSampler(config)](#new_RandomSampler_new)
     * [.getPoints()](#RandomSampler+getPoints) ⇒ <code>Array</code>
     * [.run()](#RandomSampler+run)
     * [.remove(x, y)](#RandomSampler+remove)
@@ -107,17 +108,18 @@ Based on https://www.jasondavies.com/poisson-disc/
 
 <a name="new_RandomSampler_new"></a>
 
-### new RandomSampler(width, height, x, y, radius)
+### new RandomSampler(config)
 constructor
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| width | <code>Number</code> | The width of the sample space. |
-| height | <code>Number</code> | The height of the sample space. |
-| x | <code>Number</code> | The offset from "world" center (if you're using multiple samplers). |
-| y | <code>Number</code> | The offset from world center. |
-| radius | <code>Number</code> | The minimum radius between points. |
+| config | <code>Object</code> | The config for the sampler. |
+| config.w | <code>Number</code> | The width of the sample space. |
+| config.h | <code>Number</code> | The height of the sample space. |
+| config.x | <code>Number</code> | The offset from "world" center (if you're using multiple samplers). |
+| config.y | <code>Number</code> | The offset from world center. |
+| config.r | <code>Number</code> | The minimum radius between points. |
 
 <a name="RandomSampler+getPoints"></a>
 
@@ -165,7 +167,7 @@ Based on https://www.jasondavies.com/poisson-disc/
 **Kind**: global class  
 
 * [PoissonDiscSampler](#PoissonDiscSampler)
-    * [new PoissonDiscSampler(width, height, x, y, radius)](#new_PoissonDiscSampler_new)
+    * [new PoissonDiscSampler(config)](#new_PoissonDiscSampler_new)
     * [.getPoints()](#PoissonDiscSampler+getPoints) ⇒ <code>Array</code>
     * [.run()](#PoissonDiscSampler+run)
     * [.remove(x, y)](#PoissonDiscSampler+remove)
@@ -173,17 +175,18 @@ Based on https://www.jasondavies.com/poisson-disc/
 
 <a name="new_PoissonDiscSampler_new"></a>
 
-### new PoissonDiscSampler(width, height, x, y, radius)
+### new PoissonDiscSampler(config)
 constructor
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| width | <code>Number</code> | The width of the sample space. |
-| height | <code>Number</code> | The height of the sample space. |
-| x | <code>Number</code> | The offset from "world" center (if you're using multiple samplers). |
-| y | <code>Number</code> | The offset from world center. |
-| radius | <code>Number</code> | The minimum radius between points. |
+| config | <code>Object</code> | The config for the sampler. |
+| config.w | <code>Number</code> | The width of the sample space. |
+| config.h | <code>Number</code> | The height of the sample space. |
+| config.x | <code>Number</code> | The offset from "world" center (if you're using multiple samplers). |
+| config.y | <code>Number</code> | The offset from world center. |
+| config.r | <code>Number</code> | The minimum radius between points. |
 
 <a name="PoissonDiscSampler+getPoints"></a>
 
