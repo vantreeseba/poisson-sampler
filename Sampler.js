@@ -9,11 +9,11 @@ class PoissonDiscSampler {
    * constructor
    *
    * @param {Object} config The config for the sampler.
-   * @param {Number} config.w The width of the sample space.
-   * @param {Number} config.h The height of the sample space.
-   * @param {Number} config.x The offset from "world" center (if you're using multiple samplers).
-   * @param {Number} config.y The offset from world center.
-   * @param {Number} config.r The minimum radius between points.
+   * @param {Number} [config.w=64] The width of the sample space.
+   * @param {Number} [config.h=64] The height of the sample space.
+   * @param {Number} [config.x=0] The offset from "world" center (if you're using multiple samplers).
+   * @param {Number} [config.y=0] The offset from world center.
+   * @param {Number} [config.r=10] The minimum radius between points.
    */
   constructor({w, h, x, y, r} = {w:64, h:64, x:0, y:0, r:10}) {
     this.r = r || 10;

@@ -38,14 +38,14 @@ A poisson sampler that is a grid of samplers (this allows infinite worlds to use
 Create a multisampler.
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| config | <code>Object</code> | The config for the sampler. |
-| config.w | <code>Number</code> | The width of the entire sample space. |
-| config.h | <code>Number</code> | The height of the entire sample space. |
-| config.cw | <code>Number</code> | The width of each sub sampler. |
-| config.ch | <code>Number</code> | The height of each subsampler. |
-| config.r | <code>Number</code> | The minimum radius between samples. |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| config | <code>Object</code> |  | The config for the sampler. |
+| [config.w] | <code>Number</code> | <code>64</code> | The width of the entire sample space. |
+| [config.h] | <code>Number</code> | <code>64</code> | The height of the entire sample space. |
+| [config.cw] | <code>Number</code> | <code>32</code> | The width of each sub sampler. |
+| [config.ch] | <code>Number</code> | <code>32</code> | The height of each subsampler. |
+| [config.r] | <code>Number</code> | <code>10</code> | The minimum radius between samples. |
 
 <a name="MultiSampler+getPoints"></a>
 

@@ -9,11 +9,11 @@ class MultiSampler {
    * Create a multisampler.
    *
    * @param {Object} config The config for the sampler.
-   * @param {Number} config.w The width of the entire sample space.
-   * @param {Number} config.h The height of the entire sample space.
-   * @param {Number} config.cw The width of each sub sampler.
-   * @param {Number} config.ch The height of each subsampler.
-   * @param {Number} config.r The minimum radius between samples.
+   * @param {Number} [config.w=64] The width of the entire sample space.
+   * @param {Number} [config.h=64] The height of the entire sample space.
+   * @param {Number} [config.cw=32] The width of each sub sampler.
+   * @param {Number} [config.ch=32] The height of each subsampler.
+   * @param {Number} [config.r=10] The minimum radius between samples.
    */
   constructor({w, h, cw, ch, r, useRandom} = {w:64, h:64, cw:32, ch:32, r:10, useRandom: false}) {
     this.w = w || 64;
