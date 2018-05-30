@@ -112,14 +112,14 @@ Based on https://www.jasondavies.com/poisson-disc/
 constructor
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| config | <code>Object</code> | The config for the sampler. |
-| config.w | <code>Number</code> | The width of the sample space. |
-| config.h | <code>Number</code> | The height of the sample space. |
-| config.x | <code>Number</code> | The offset from "world" center (if you're using multiple samplers). |
-| config.y | <code>Number</code> | The offset from world center. |
-| config.r | <code>Number</code> | The minimum radius between points. |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| config | <code>Object</code> |  | The config for the sampler. |
+| [config.w] | <code>Number</code> | <code>64</code> | The width of the sample space. |
+| [config.h] | <code>Number</code> | <code>64</code> | The height of the sample space. |
+| [config.x] | <code>Number</code> | <code>0</code> | The offset from "world" center (if you're using multiple samplers). |
+| [config.y] | <code>Number</code> | <code>0</code> | The offset from world center. |
+| [config.r] | <code>Number</code> | <code>10</code> | The minimum radius between points. |
 
 <a name="RandomSampler+getPoints"></a>
 
@@ -179,14 +179,14 @@ Based on https://www.jasondavies.com/poisson-disc/
 constructor
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| config | <code>Object</code> | The config for the sampler. |
-| config.w | <code>Number</code> | The width of the sample space. |
-| config.h | <code>Number</code> | The height of the sample space. |
-| config.x | <code>Number</code> | The offset from "world" center (if you're using multiple samplers). |
-| config.y | <code>Number</code> | The offset from world center. |
-| config.r | <code>Number</code> | The minimum radius between points. |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| config | <code>Object</code> |  | The config for the sampler. |
+| [config.w] | <code>Number</code> | <code>64</code> | The width of the sample space. |
+| [config.h] | <code>Number</code> | <code>64</code> | The height of the sample space. |
+| [config.x] | <code>Number</code> | <code>0</code> | The offset from "world" center (if you're using multiple samplers). |
+| [config.y] | <code>Number</code> | <code>0</code> | The offset from world center. |
+| [config.r] | <code>Number</code> | <code>10</code> | The minimum radius between points. |
 
 <a name="PoissonDiscSampler+getPoints"></a>
 
