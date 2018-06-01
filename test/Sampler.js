@@ -28,7 +28,7 @@ module.exports = {
 
       assert.equal(points.length, 4);
     },
- 
+
     'Should return some points with negative x,y': () => {
       const sampler = new Sampler({x:-64, y:-64});
       const points = sampler.getPoints();
