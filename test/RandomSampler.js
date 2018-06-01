@@ -12,10 +12,7 @@ module.exports = {
     },
     'Should not die when huge': () => {
       const sampler = new Sampler({h: 47000, w:47000, r: 1000});
-
-      console.log(sampler.gridHeight);
       const points = sampler.getPoints();
-      console.log(points.length);
 
       assert.isAtLeast(points.length, 1);
     },
@@ -24,6 +21,12 @@ module.exports = {
       const points = sampler.getPoints();
 
       assert.isAtLeast(points.length, 1);
+    },
+    'Should return num of points requested': () => {
+      const sampler = new Sampler({});
+      const points = sampler.getPoints(4);
+
+      assert.equal(points.length, 4);
     },
     'Should return some points with negative x,y': () => {
       const sampler = new Sampler({x:-64, y:-64});

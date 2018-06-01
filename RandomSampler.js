@@ -40,8 +40,8 @@ class RandomSampler {
    * Get all sample points from sampler.
    * @return {Array} An array of points.
    */
-  getPoints() {
-    const maxPoints = this.gridHeight * this.gridWidth;
+  getPoints(num = 0) {
+    const maxPoints = num || this.gridHeight * this.gridWidth;
     for (var i = 0; i < maxPoints; i++) {
       this.run();
     }

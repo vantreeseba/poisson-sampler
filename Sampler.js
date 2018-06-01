@@ -40,8 +40,8 @@ class PoissonDiscSampler {
    * Get all sample points from sampler.
    * @return {Array} An array of points.
    */
-  getPoints() {
-    const maxPoints = this.gridWidth * this.gridHeight;
+  getPoints(num = 0) {
+    const maxPoints = num || this.gridWidth * this.gridHeight;
     for (var i = 0; i < maxPoints; i++) {
       this.run();
     }

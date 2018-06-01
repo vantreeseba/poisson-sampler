@@ -66,10 +66,10 @@ class MultiSampler {
    * Get all points from all sub-samplers.
    * @return {Array} The array of points.
    */
-  getPoints() {
+  getPoints(num = 0) {
     if(this.dirty) {
       this.points = this.cellSamplers
-        .map(s => s.getPoints())
+        .map(s => s.getPoints(num / this.cellSamplers.length))
         .reduce((arr, cur) => arr.concat(cur), []);
 
       this.dirty = false;
