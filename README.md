@@ -2,10 +2,8 @@
 
 A poisson disc sampler implementation.
 
-<pre>
-<p data-height="265" data-theme-id="0" data-slug-hash="gKbRYx" data-default-tab="result" data-user="vantreeseba" data-embed-version="2" data-pen-title="Fast poisson disc sampler with removal/respawn" class="codepen">See the Pen <a href="https://codepen.io/vantreeseba/pen/gKbRYx/">Fast poisson disc sampler with removal/respawn</a> by Ben Van Treese (<a href="https://codepen.io/vantreeseba">@vantreeseba</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<p data-height="265" data-theme-id="0" data-slug-hash="gKbRYx" data-default-tab="result" data-user="vantreeseba" data-embed-version="2" data-pen-title="Fast poisson disc sampler with removal/respawn" data-preview="true" class="codepen">See the Pen <a href="https://codepen.io/vantreeseba/pen/gKbRYx/">Fast poisson disc sampler with removal/respawn</a> by Ben Van Treese (<a href="https://codepen.io/vantreeseba">@vantreeseba</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-</pre>
 
 ## Classes
 
