@@ -54,15 +54,17 @@ class RandomSampler {
    */
   run() {
     let kk = 0;
-    while(kk < 100){
+    while(kk < this.k){
       let x = this.rng.random() * this.w;
       let y = this.rng.random() * this.h;
       kk++;
 
       let far = this.far(x, y);
-      let s = this.sample(x, y);
-      if(s && far) {
-        return s;
+      if(far) {
+        let s = this.sample(x, y);
+        if(s) {
+          return s;
+        }
       }
     }
   }
