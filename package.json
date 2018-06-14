@@ -1,6 +1,6 @@
 {
   "name": "infinite-poisson-disc-sampler",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "",
   "main": "index.js",
   "devDependencies": {
@@ -21,7 +21,10 @@
     }
   },
   "nyc": {
-    "exclude": ["docs", "test"]
+    "exclude": [
+      "docs",
+      "test"
+    ]
   },
   "scripts": {
     "watch": "npm-watch test",
