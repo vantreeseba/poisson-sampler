@@ -1,3 +1,16 @@
+## <small>0.4.1 (2018-07-02)</small>
+
+* Add changelog generation to version script ([0f41825](https://github.com/vantreeseba/poisson-sampler/commit/0f41825))
+
+
+
+## 0.4.0 (2018-07-02)
+
+* 0.4.0 ([c88bce4](https://github.com/vantreeseba/poisson-sampler/commit/c88bce4))
+* Add changelog, add getnewpoints method to random sampler ([4fd486a](https://github.com/vantreeseba/poisson-sampler/commit/4fd486a))
+
+
+
 ## <small>0.3.2 (2018-06-14)</small>
 
 * 0.3.2 ([c1e311f](https://github.com/vantreeseba/poisson-sampler/commit/c1e311f))
