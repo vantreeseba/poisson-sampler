@@ -104,6 +104,7 @@ Based on https://www.jasondavies.com/poisson-disc/
 * [RandomSampler](#RandomSampler)
     * [new RandomSampler(config)](#new_RandomSampler_new)
     * [.getPoints()](#RandomSampler+getPoints) ⇒ <code>Array</code>
+    * [.getNewPoints()](#RandomSampler+getNewPoints) ⇒ <code>Array</code>
     * [.run()](#RandomSampler+run)
     * [.remove(x, y)](#RandomSampler+remove)
     * [.prePopulate(points)](#RandomSampler+prePopulate)
@@ -127,6 +128,13 @@ constructor
 
 ### randomSampler.getPoints() ⇒ <code>Array</code>
 Get all sample points from sampler.
+
+**Kind**: instance method of [<code>RandomSampler</code>](#RandomSampler)  
+**Returns**: <code>Array</code> - An array of points.  
+<a name="RandomSampler+getNewPoints"></a>
+
+### randomSampler.getNewPoints() ⇒ <code>Array</code>
+Get new sample points from sampler.
 
 **Kind**: instance method of [<code>RandomSampler</code>](#RandomSampler)  
 **Returns**: <code>Array</code> - An array of points.  
