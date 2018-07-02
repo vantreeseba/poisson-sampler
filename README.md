@@ -30,6 +30,7 @@ A poisson sampler that is a grid of samplers (this allows infinite worlds to use
 * [MultiSampler](#MultiSampler)
     * [new MultiSampler(config)](#new_MultiSampler_new)
     * [.getPoints()](#MultiSampler+getPoints) ⇒ <code>Array</code>
+    * [.getNewPoints()](#MultiSampler+getNewPoints) ⇒ <code>Array</code>
     * [.getPointsForCell(x, y)](#MultiSampler+getPointsForCell) ⇒ <code>Array</code>
     * [.resize(h, w)](#MultiSampler+resize)
     * [.prePopulate(points)](#MultiSampler+prePopulate)
@@ -56,6 +57,13 @@ Get all points from all sub-samplers.
 
 **Kind**: instance method of [<code>MultiSampler</code>](#MultiSampler)  
 **Returns**: <code>Array</code> - The array of points.  
+<a name="MultiSampler+getNewPoints"></a>
+
+### multiSampler.getNewPoints() ⇒ <code>Array</code>
+Get new sample points from sampler.
+
+**Kind**: instance method of [<code>MultiSampler</code>](#MultiSampler)  
+**Returns**: <code>Array</code> - An array of points.  
 <a name="MultiSampler+getPointsForCell"></a>
 
 ### multiSampler.getPointsForCell(x, y) ⇒ <code>Array</code>
@@ -179,6 +187,7 @@ Based on https://www.jasondavies.com/poisson-disc/
 * [PoissonDiscSampler](#PoissonDiscSampler)
     * [new PoissonDiscSampler(config)](#new_PoissonDiscSampler_new)
     * [.getPoints()](#PoissonDiscSampler+getPoints) ⇒ <code>Array</code>
+    * [.getNewPoints()](#PoissonDiscSampler+getNewPoints) ⇒ <code>Array</code>
     * [.run()](#PoissonDiscSampler+run)
     * [.remove(x, y)](#PoissonDiscSampler+remove)
     * [.prePopulate(points)](#PoissonDiscSampler+prePopulate)
@@ -202,6 +211,13 @@ constructor
 
 ### poissonDiscSampler.getPoints() ⇒ <code>Array</code>
 Get all sample points from sampler.
+
+**Kind**: instance method of [<code>PoissonDiscSampler</code>](#PoissonDiscSampler)  
+**Returns**: <code>Array</code> - An array of points.  
+<a name="PoissonDiscSampler+getNewPoints"></a>
+
+### poissonDiscSampler.getNewPoints() ⇒ <code>Array</code>
+Get new sample points from sampler.
 
 **Kind**: instance method of [<code>PoissonDiscSampler</code>](#PoissonDiscSampler)  
 **Returns**: <code>Array</code> - An array of points.  

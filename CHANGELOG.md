@@ -1,5 +1,12 @@
+## 0.5.0 (2018-07-02)
+
+* Add getNewPoints to multi and normal sampler ([21639ab](https://github.com/vantreeseba/poisson-sampler/commit/21639ab))
+
+
+
 ## <small>0.4.1 (2018-07-02)</small>
 
+* 0.4.1 ([ea9efb9](https://github.com/vantreeseba/poisson-sampler/commit/ea9efb9))
 * Add changelog generation to version script ([0f41825](https://github.com/vantreeseba/poisson-sampler/commit/0f41825))
 
 
