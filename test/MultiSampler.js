@@ -22,6 +22,23 @@ module.exports = {
         assert.isAtLeast(points.length, 20);
       },
     },
+    'getNewPoints': {
+      'Should return an array of all points.': () => {
+        const sampler = new Sampler();
+        const points = sampler.getNewPoints();
+
+        assert.isAtLeast(points.length, 20);
+      },
+    },
+    'random getNewPoints': {
+      'Should return an array of all points.': () => {
+        const sampler = new Sampler({useRandom: true});
+        const points = sampler.getNewPoints();
+
+        assert.isAtLeast(points.length, 20);
+      },
+    },
+
     'Should return num of points requested': () => {
       const sampler = new Sampler({});
       const points = sampler.getPoints(4);

@@ -50,6 +50,24 @@ class PoissonDiscSampler {
   }
 
   /**
+   * Get new sample points from sampler.
+   * @return {Array} An array of points.
+   */
+  getNewPoints(num = 0) {
+    const maxPoints = num || this.gridHeight * this.gridWidth;
+    const newPoints = [];
+    for (var i = 0; i < maxPoints; i++) {
+      let s = this.run();
+      if(s) {
+        newPoints.push([s[0] + this.x, s[1] + this.y]);
+      }
+    }
+
+    return newPoints;
+  }
+
+
+  /**
    * Runs the sampler.
    */
   run() {

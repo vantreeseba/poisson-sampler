@@ -79,6 +79,21 @@ class MultiSampler {
   }
 
   /**
+   * Get new sample points from sampler.
+   * @return {Array} An array of points.
+   */
+  getNewPoints(num = 0) {
+    let newPoints = this.cellSamplers
+      .map(s => s.getNewPoints(num / this.cellSamplers.length))
+      .reduce((arr, cur) => arr.concat(cur), []);
+
+    this.points = this.points.concat(newPoints);
+
+    return newPoints;
+  }
+
+
+  /**
    * Get points for a single cell.
    *
    * @param {Number} x The x coord in the cell.
