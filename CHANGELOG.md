@@ -1,5 +1,12 @@
+## <small>0.5.1 (2018-07-02)</small>
+
+* Make multisampler remove points from removed samplers when resizing ([85551ea](https://github.com/vantreeseba/poisson-sampler/commit/85551ea))
+
+
+
 ## 0.5.0 (2018-07-02)
 
+* 0.5.0 ([30d8e4f](https://github.com/vantreeseba/poisson-sampler/commit/30d8e4f))
 * Add getNewPoints to multi and normal sampler ([21639ab](https://github.com/vantreeseba/poisson-sampler/commit/21639ab))
 
 
