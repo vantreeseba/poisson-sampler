@@ -57,6 +57,10 @@ class MultiSampler {
     for(var i = this.cellSamplers.length - 1; i >= 0; i--) {
       const cur = this.cellSamplers[i];
       if(cur.x < -hw || cur.x >= hw || cur.y < -hh || cur.y >= hh) {
+        this.cellSamplers[i].getPoints(0).forEach(p => {
+          const index = this.points.findIndex(x => x[0] === p[0] && x[1] === p[1]);
+          this.points.splice(index, 1);
+        });
         this.cellSamplers.splice(i, 1);
       }
     }

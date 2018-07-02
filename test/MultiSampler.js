@@ -75,9 +75,14 @@ module.exports = {
       },
       'Should remove samplers outside new size': () => {
         const sampler = new Sampler({w: 64, h: 64, cw: 16, ch: 16, r: 4});
+        const beforeLength = sampler.getPoints(400).length;
+
         assert.equal(sampler.cellSamplers.length, 16);
         sampler.resize(32, 32);
+        const afterLength = sampler.getPoints(400).length;
+
         assert.equal(sampler.cellSamplers.length, 4);
+        assert.notEqual(beforeLength, afterLength);
       },
     },
     'prePopulate': {
