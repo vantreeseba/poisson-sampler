@@ -72,9 +72,10 @@ class RandomSampler {
    */
   run() {
     let kk = 0;
+    let cc = this.cellSize / 2;
     while(kk < this.k){
-      let x = this.rng.random() * this.w;
-      let y = this.rng.random() * this.h;
+      let x = cc + (this.rng.random() * (this.w - (cc * 2)));
+      let y = cc + (this.rng.random() * (this.h - (cc * 2)));
       kk++;
 
       let far = this.far(x, y);

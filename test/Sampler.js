@@ -35,6 +35,38 @@ module.exports = {
 
       assert.isAtLeast(points.length, 1);
     },
+    'All points should be at least R distance from extents.': () => {
+      const r = 64;
+      const h = 512;
+      const w = 512;
+      const sampler = new Sampler({h, w, r, x:0, y:0});
+      sampler.rng.init_seed(Math.random() * 5000);
+      const points = sampler.getPoints(500);
+      let allGood = true;
+
+      const cc = sampler.cellSize/2;
+
+      points.forEach(p => {
+        if (p[0] < cc) {
+          allGood = false;
+        }
+        if (p[1] < cc) {
+          allGood = false;
+        }
+        if (p[0] > w - cc) {
+          allGood = false;
+        }
+        if (p[1] > h - cc) {
+          allGood = false;
+        }
+      });
+
+
+      assert.isTrue(allGood);
+      assert.isAtLeast(points.length, 20);
+    },
+
+
     'All points should be at least R distance apart.': () => {
       const r = 100;
       const sampler = new Sampler({h: 800, w: 800, r});
@@ -44,7 +76,7 @@ module.exports = {
       points.forEach(p => {
         points.forEach(p2 => {
           if(p !== p2) {
-            if (distanceFrom(p.x, p.y, p2.x, p2.y) < r) {
+            if (distanceFrom(p[0], p[1], p2[0], p2[1]) < r) {
               allGood = false;
             }
           }
@@ -55,6 +87,7 @@ module.exports = {
       assert.isTrue(allGood);
       assert.isAtLeast(points.length, 20);
     },
+
     'After remove, all points should be at least R distance apart.': () => {
       const r = 100;
       const sampler = new Sampler({h: 800, w: 800, r});
@@ -70,7 +103,7 @@ module.exports = {
       points.forEach(p => {
         points.forEach(p2 => {
           if(p !== p2) {
-            if (distanceFrom(p.x, p.y, p2.x, p2.y) < r) {
+            if (distanceFrom(p[0], p[1], p2[0], p2[1]) < r) {
               allGood = false;
             }
           }
