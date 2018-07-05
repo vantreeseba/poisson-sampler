@@ -1,5 +1,12 @@
+## 0.6.0 (2018-07-05)
+
+* Fix tests on distance inside samplers, add extent check in random sampler ([470ddc2](https://github.com/vantreeseba/poisson-sampler/commit/470ddc2))
+
+
+
 ## <small>0.5.1 (2018-07-02)</small>
 
+* 0.5.1 ([516f071](https://github.com/vantreeseba/poisson-sampler/commit/516f071))
 * Make multisampler remove points from removed samplers when resizing ([85551ea](https://github.com/vantreeseba/poisson-sampler/commit/85551ea))
 
 
