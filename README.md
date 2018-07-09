@@ -34,6 +34,7 @@ A poisson sampler that is a grid of samplers (this allows infinite worlds to use
     * [.getPointsForCell(x, y)](#MultiSampler+getPointsForCell) ⇒ <code>Array</code>
     * [.resize(h, w)](#MultiSampler+resize)
     * [.prePopulate(points)](#MultiSampler+prePopulate)
+    * [.remove(x, y)](#MultiSampler+remove)
 
 <a name="new_MultiSampler_new"></a>
 
@@ -101,6 +102,19 @@ rejecting ones outside the subsamplers.
 | --- | --- | --- |
 | points | <code>Array</code> | The points to seed subsamplers with. |
 
+<a name="MultiSampler+remove"></a>
+
+### multiSampler.remove(x, y)
+Remove a sample from the grid.
+It will be replaced with new one the next time get points is called.
+
+**Kind**: instance method of [<code>MultiSampler</code>](#MultiSampler)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>Number</code> | The x coord. |
+| y | <code>Number</code> | The y coord. |
+
 <a name="RandomSampler"></a>
 
 ## RandomSampler
@@ -112,7 +126,7 @@ Based on https://www.jasondavies.com/poisson-disc/
 * [RandomSampler](#RandomSampler)
     * [new RandomSampler(config)](#new_RandomSampler_new)
     * [.getPoints()](#RandomSampler+getPoints) ⇒ <code>Array</code>
-    * [.getNewPoints()](#RandomSampler+getNewPoints) ⇒ <code>Array</code>
+    * [.getNewPoints(The)](#RandomSampler+getNewPoints) ⇒ <code>Array</code>
     * [.run()](#RandomSampler+run)
     * [.remove(x, y)](#RandomSampler+remove)
     * [.prePopulate(points)](#RandomSampler+prePopulate)
@@ -128,7 +142,7 @@ constructor
 | config | <code>Object</code> |  | The config for the sampler. |
 | [config.w] | <code>Number</code> | <code>64</code> | The width of the sample space. |
 | [config.h] | <code>Number</code> | <code>64</code> | The height of the sample space. |
-| [config.x] | <code>Number</code> | <code>0</code> | The offset from "world" center (if you're using multiple samplers). |
+| [config.x] | <code>Number</code> | <code>0</code> | The offset from "world" center (used by multisampler). |
 | [config.y] | <code>Number</code> | <code>0</code> | The offset from world center. |
 | [config.r] | <code>Number</code> | <code>10</code> | The minimum radius between points. |
 
@@ -141,11 +155,16 @@ Get all sample points from sampler.
 **Returns**: <code>Array</code> - An array of points.  
 <a name="RandomSampler+getNewPoints"></a>
 
-### randomSampler.getNewPoints() ⇒ <code>Array</code>
+### randomSampler.getNewPoints(The) ⇒ <code>Array</code>
 Get new sample points from sampler.
 
 **Kind**: instance method of [<code>RandomSampler</code>](#RandomSampler)  
 **Returns**: <code>Array</code> - An array of points.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| The | <code>Number</code> | number of new points desired. |
+
 <a name="RandomSampler+run"></a>
 
 ### randomSampler.run()
@@ -187,7 +206,7 @@ Based on https://www.jasondavies.com/poisson-disc/
 * [PoissonDiscSampler](#PoissonDiscSampler)
     * [new PoissonDiscSampler(config)](#new_PoissonDiscSampler_new)
     * [.getPoints()](#PoissonDiscSampler+getPoints) ⇒ <code>Array</code>
-    * [.getNewPoints()](#PoissonDiscSampler+getNewPoints) ⇒ <code>Array</code>
+    * [.getNewPoints(The)](#PoissonDiscSampler+getNewPoints) ⇒ <code>Array</code>
     * [.run()](#PoissonDiscSampler+run)
     * [.remove(x, y)](#PoissonDiscSampler+remove)
     * [.prePopulate(points)](#PoissonDiscSampler+prePopulate)
@@ -203,7 +222,7 @@ constructor
 | config | <code>Object</code> |  | The config for the sampler. |
 | [config.w] | <code>Number</code> | <code>64</code> | The width of the sample space. |
 | [config.h] | <code>Number</code> | <code>64</code> | The height of the sample space. |
-| [config.x] | <code>Number</code> | <code>0</code> | The offset from "world" center (if you're using multiple samplers). |
+| [config.x] | <code>Number</code> | <code>0</code> | The offset from "world" center (used by multisampler). |
 | [config.y] | <code>Number</code> | <code>0</code> | The offset from world center. |
 | [config.r] | <code>Number</code> | <code>10</code> | The minimum radius between points. |
 
@@ -216,11 +235,16 @@ Get all sample points from sampler.
 **Returns**: <code>Array</code> - An array of points.  
 <a name="PoissonDiscSampler+getNewPoints"></a>
 
-### poissonDiscSampler.getNewPoints() ⇒ <code>Array</code>
+### poissonDiscSampler.getNewPoints(The) ⇒ <code>Array</code>
 Get new sample points from sampler.
 
 **Kind**: instance method of [<code>PoissonDiscSampler</code>](#PoissonDiscSampler)  
 **Returns**: <code>Array</code> - An array of points.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| The | <code>Number</code> | number of new points desired. |
+
 <a name="PoissonDiscSampler+run"></a>
 
 ### poissonDiscSampler.run()

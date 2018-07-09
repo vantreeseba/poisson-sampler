@@ -1,5 +1,12 @@
+## 0.7.0 (2018-07-09)
+
+* Add more tests, fix multisampler and some edge cases ([7d68062](https://github.com/vantreeseba/poisson-sampler/commit/7d68062))
+
+
+
 ## 0.6.0 (2018-07-05)
 
+* 0.6.0 ([0c76aa1](https://github.com/vantreeseba/poisson-sampler/commit/0c76aa1))
 * Fix tests on distance inside samplers, add extent check in random sampler ([470ddc2](https://github.com/vantreeseba/poisson-sampler/commit/470ddc2))
 
 
