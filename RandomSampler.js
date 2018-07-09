@@ -11,11 +11,11 @@ class RandomSampler {
    * @param {Object} config The config for the sampler.
    * @param {Number} [config.w=64] The width of the sample space.
    * @param {Number} [config.h=64] The height of the sample space.
-   * @param {Number} [config.x=0] The offset from "world" center (if you're using multiple samplers).
+   * @param {Number} [config.x=0] The offset from "world" center (used by multisampler).
    * @param {Number} [config.y=0] The offset from world center.
    * @param {Number} [config.r=10] The minimum radius between points.
    */
-  constructor({w, h, x, y, r} = {w:64, h:64, x:0, y:0, r:10}) {
+  constructor({w, h, x, y, r} = {w: 64, h: 64, x: 0, y: 0, r: 10}) {
     this.r = r || 10;
     this.w = w || 64;
     this.h = h || 64;
@@ -28,12 +28,9 @@ class RandomSampler {
     this.gridWidth = Math.ceil(this.w / this.cellSize);
     this.gridHeight = Math.ceil(this.h / this.cellSize);
     this.grid = new Array(this.gridWidth * this.gridHeight);
-    this.queue = [];
-    this.queueSize = 0;
-    this.sampleSize = 0;
 
     this.rng = new MersenneTwister();
-    this.rng.init_seed((this.x + 1 + Math.pow((this.y + 1), 2)));
+    this.rng.init_seed(this.x + 1 + Math.pow(this.y + 1, 2));
   }
 
   /**
@@ -51,6 +48,7 @@ class RandomSampler {
 
   /**
    * Get new sample points from sampler.
+   * @param {Number} The number of new points desired.
    * @return {Array} An array of points.
    */
   getNewPoints(num = 0) {
@@ -58,30 +56,27 @@ class RandomSampler {
     const newPoints = [];
     for (var i = 0; i < maxPoints; i++) {
       let s = this.run();
-      if(s) {
+      if (s) {
         newPoints.push([s[0] + this.x, s[1] + this.y]);
       }
     }
-
     return newPoints;
   }
-
 
   /**
    * Runs the sampler.
    */
   run() {
     let kk = 0;
-    let cc = this.cellSize / 2;
-    while(kk < this.k){
+    let cc = this.cellSize * 0.7;
+    while (kk < 100) {
       let x = cc + (this.rng.random() * (this.w - (cc * 2)));
       let y = cc + (this.rng.random() * (this.h - (cc * 2)));
       kk++;
 
-      let far = this.far(x, y);
-      if(far) {
+      if (this.far(x, y)) {
         let s = this.sample(x, y);
-        if(s) {
+        if (s) {
           return s;
         }
       }
@@ -144,15 +139,12 @@ class RandomSampler {
    * @return {Object} The point sampled.
    */
   sample(x, y) {
-    if(this.grid[this.xyToIndex(x, y)]) {
+    let index = this.xyToIndex(x, y);
+    if (this.grid[index]) {
       return;
     }
-    var point = [x, y];
-    this.queue.push(point);
-    this.grid[this.xyToIndex(x, y)] = point;
-    ++this.sampleSize;
-    ++this.queueSize;
-    return point;
+
+    return (this.grid[index] = [x, y]);
   }
 
   /**
@@ -163,8 +155,14 @@ class RandomSampler {
    * @param {Number} y The y coord.
    */
   remove(x, y) {
-    delete this.grid[this.xyToIndex(x, y)];
-    this.sampleSize = 0;
+    if(x <= this.x || y <= this.y || x > this.x + this.w || y > this.y + this.h){
+      return;
+    }
+    const index = this.xyToIndex(x - this.x, y - this.y);
+    if(!this.grid[index]) {
+      return;
+    }
+    delete this.grid[index];
   }
 
   /**
@@ -173,17 +171,22 @@ class RandomSampler {
    */
   prePopulate(points) {
     points.forEach(p => {
-      const inside = Array.isArray(p) ?
-        p[0] >= this.x && p[0] <= this.x + this.w && p[1] >= this.y && p[1] <= this.h + this.y :
-        p.x >= this.x && p.x <= this.x + this.w && p.y >= this.y && p.y <= this.h + this.y;
+      const inside = Array.isArray(p)
+        ? p[0] >= this.x &&
+          p[0] <= this.x + this.w &&
+          p[1] >= this.y &&
+          p[1] <= this.h + this.y
+        : p.x >= this.x &&
+          p.x <= this.x + this.w &&
+          p.y >= this.y &&
+          p.y <= this.h + this.y;
 
-      if(inside) {
-        Array.isArray(p) ?
-          this.sample(p[0] - this.x, p[1] - this.y) :
-          this.sample(p.x - this.x, p.y - this.y);
+      if (inside) {
+        Array.isArray(p)
+          ? this.sample(p[0] - this.x, p[1] - this.y)
+          : this.sample(p.x - this.x, p.y - this.y);
       }
     });
   }
 }
-
 module.exports = RandomSampler;

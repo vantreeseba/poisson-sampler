@@ -44,7 +44,7 @@ module.exports = {
       const points = sampler.getPoints(500);
       let allGood = true;
 
-      const cc = sampler.cellSize/2;
+      const cc = sampler.radius/2;
 
       points.forEach(p => {
         if (p[0] < cc) {

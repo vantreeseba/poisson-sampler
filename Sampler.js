@@ -11,11 +11,11 @@ class PoissonDiscSampler {
    * @param {Object} config The config for the sampler.
    * @param {Number} [config.w=64] The width of the sample space.
    * @param {Number} [config.h=64] The height of the sample space.
-   * @param {Number} [config.x=0] The offset from "world" center (if you're using multiple samplers).
+   * @param {Number} [config.x=0] The offset from "world" center (used by multisampler).
    * @param {Number} [config.y=0] The offset from world center.
    * @param {Number} [config.r=10] The minimum radius between points.
    */
-  constructor({w, h, x, y, r} = {w:64, h:64, x:0, y:0, r:10}) {
+  constructor({w, h, x, y, r} = {w: 64, h: 64, x: 0, y: 0, r: 10}) {
     this.r = r || 10;
     this.w = w || 64;
     this.h = h || 64;
@@ -33,7 +33,7 @@ class PoissonDiscSampler {
     this.sampleSize = 0;
 
     this.rng = new MersenneTwister();
-    this.rng.init_seed((this.x + 1 + Math.pow((this.y + 1), 2)));
+    this.rng.init_seed(this.x + 1 + Math.pow(this.y + 1, 2));
   }
 
   /**
@@ -51,6 +51,7 @@ class PoissonDiscSampler {
 
   /**
    * Get new sample points from sampler.
+   * @param {Number} The number of new points desired.
    * @return {Array} An array of points.
    */
   getNewPoints(num = 0) {
@@ -58,14 +59,13 @@ class PoissonDiscSampler {
     const newPoints = [];
     for (var i = 0; i < maxPoints; i++) {
       let s = this.run();
-      if(s) {
+      if (s) {
         newPoints.push([s[0] + this.x, s[1] + this.y]);
       }
     }
 
     return newPoints;
   }
-
 
   /**
    * Runs the sampler.
@@ -88,7 +88,7 @@ class PoissonDiscSampler {
           r = Math.sqrt(this.rng.random() * this.R + this.radius2),
           x = s[0] + r * Math.cos(a),
           y = s[1] + r * Math.sin(a),
-          cc = this.cellSize / 2;
+          cc = this.cellSize * .7;
 
         // Reject candidates that are outside the allowed extent,
         // or closer than 2 * radius to any existing sample.
@@ -162,6 +162,9 @@ class PoissonDiscSampler {
    * @return {Object} The point sampled.
    */
   sample(x, y) {
+    if (this.grid[this.xyToIndex(x, y)]) {
+      return;
+    }
     var point = [x, y];
     this.queue.push(point);
     this.grid[this.xyToIndex(x, y)] = point;
@@ -178,8 +181,20 @@ class PoissonDiscSampler {
    * @param {Number} y The y coord.
    */
   remove(x, y) {
-    delete this.grid[this.xyToIndex(x, y)];
-    this.sampleSize = 0;
+    if(x <= this.x || y <= this.y || x > this.x + this.w || y > this.y + this.h){
+      return;
+    }
+    const index = this.xyToIndex(x - this.x, y - this.y);
+    if(!this.grid[index]) {
+      return;
+    }
+    delete this.grid[index];
+
+    // Add random existing sample to queue
+    const existing = this.grid.filter(p => p);
+    const random = Math.floor(Math.random() * existing.length);
+    this.queue.push(existing[random]);
+    this.queueSize++;
   }
 
   /**
@@ -188,17 +203,22 @@ class PoissonDiscSampler {
    */
   prePopulate(points) {
     points.forEach(p => {
-      const inside = Array.isArray(p) ?
-        p[0] >= this.x && p[0] <= this.x + this.w && p[1] >= this.y && p[1] <= this.h + this.y :
-        p.x >= this.x && p.x <= this.x + this.w && p.y >= this.y && p.y <= this.h + this.y;
+      const inside = Array.isArray(p)
+        ? p[0] >= this.x &&
+          p[0] <= this.x + this.w &&
+          p[1] >= this.y &&
+          p[1] <= this.h + this.y
+        : p.x >= this.x &&
+          p.x <= this.x + this.w &&
+          p.y >= this.y &&
+          p.y <= this.h + this.y;
 
-      if(inside) {
-        Array.isArray(p) ?
-          this.sample(p[0] - this.x, p[1] - this.y) :
-          this.sample(p.x - this.x, p.y - this.y);
+      if (inside) {
+        Array.isArray(p)
+          ? this.sample(p[0] - this.x, p[1] - this.y)
+          : this.sample(p.x - this.x, p.y - this.y);
       }
     });
   }
 }
-
 module.exports = PoissonDiscSampler;

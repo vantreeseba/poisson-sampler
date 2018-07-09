@@ -10,7 +10,7 @@ module.exports = {
       assert.isAtLeast(sampler.cellSamplers.length, 4);
     },
     'Should build the correct number of samplers given args': () => {
-      const sampler = new Sampler({w: 64, h: 64, cw: 16, ch: 16, r:4});
+      const sampler = new Sampler({w: 64, h: 64, cw: 16, ch: 16, r:2});
 
       assert.isAtLeast(sampler.cellSamplers.length, 16);
     },
@@ -19,26 +19,32 @@ module.exports = {
         const sampler = new Sampler();
         const points = sampler.getPoints();
 
-        assert.isAtLeast(points.length, 20);
+        assert.isAtLeast(points.length, 15);
       },
     },
     'getNewPoints': {
-      'Should return an array of all points.': () => {
+      'Should return an array of new points.': () => {
         const sampler = new Sampler();
-        const points = sampler.getNewPoints();
+        const points = sampler.getNewPoints(15);
 
-        assert.isAtLeast(points.length, 20);
+        assert.isAtLeast(points.length, 15);
       },
     },
     'random getNewPoints': {
-      'Should return an array of all points.': () => {
+      'Should return an array of new points.': () => {
+        const sampler = new Sampler({useRandom: true});
+        const points = sampler.getNewPoints(15);
+
+        assert.isAtLeast(points.length, 15);
+      },
+
+      'Should return an array of 1 point by default.': () => {
         const sampler = new Sampler({useRandom: true});
         const points = sampler.getNewPoints();
 
-        assert.isAtLeast(points.length, 20);
+        assert.isAtLeast(points.length, 1);
       },
     },
-
     'Should return num of points requested': () => {
       const sampler = new Sampler({});
       const points = sampler.getPoints(4);
@@ -50,20 +56,20 @@ module.exports = {
         const sampler = new Sampler();
         const points = sampler.getPointsForCell(0, 0);
 
-        assert.isAtLeast(points.length, 5);
+        assert.isAtLeast(points.length, 2);
       },
       'Should return an array of points when points already exist': () => {
         const sampler = new Sampler();
         sampler.getPoints();
         const points = sampler.getPointsForCell(0, 0);
 
-        assert.isAtLeast(points.length, 5);
+        assert.isAtLeast(points.length, 2);
       },
       'Should add sampler for out of range cell': () => {
         const sampler = new Sampler();
         const points = sampler.getPointsForCell(64, 0);
 
-        assert.isAtLeast(points.length, 5);
+        assert.isAtLeast(points.length, 2);
       },
     },
     'resize': {
@@ -92,7 +98,7 @@ module.exports = {
         sampler.prePopulate(existing);
         const points = sampler.getPoints();
 
-        assert.isAtLeast(points.length, 20);
+        assert.isAtLeast(points.length, 15);
         assert.isOk(points.find(p => p[0] === 1 && p[1] === 1));
       },
       'should reject points outside of sampler space': () => {
@@ -101,10 +107,23 @@ module.exports = {
         sampler.prePopulate(existing);
         const points = sampler.getPoints();
 
-        assert.isAtLeast(points.length, 20);
+        assert.isAtLeast(points.length, 15);
         assert.isUndefined(points.find(p => p[0] === -1000 && p[1] === 1));
       }
+    },
+    'remove': {
+      'should remove point from sampler': () => {
+        const sampler = new Sampler();
+        const points = sampler.getPoints();
+        const p = points[0];
 
+        sampler.remove(p[0], p[1]);
+
+        const points2 = sampler.getPoints();
+        const index = points2.findIndex(x => x[0] === p[0] && x[1] === p[1]);
+
+        assert.equal(-1, index);
+      }
     }
   },
 };
