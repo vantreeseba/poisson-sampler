@@ -1,5 +1,12 @@
+## 0.8.0 (2018-07-16)
+
+* Change how resize / building samplers work to prevent overlaps ([3c4c5dc](https://github.com/vantreeseba/poisson-sampler/commit/3c4c5dc))
+
+
+
 ## 0.7.0 (2018-07-09)
 
+* 0.7.0 ([09aa11d](https://github.com/vantreeseba/poisson-sampler/commit/09aa11d))
 * Add more tests, fix multisampler and some edge cases ([7d68062](https://github.com/vantreeseba/poisson-sampler/commit/7d68062))
 
 
