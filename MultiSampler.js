@@ -31,13 +31,12 @@ class MultiSampler {
     this.ch = ch || 32;
     this.r = r;
 
+    this.points = [];
     this.dirty = true;
 
     this.samplerConstructor = useRandom ? RandomSampler : Sampler;
 
     this.buildSamplers();
-    this.points = [];
-    this.dirty = true;
   }
 
   /**
@@ -45,7 +44,7 @@ class MultiSampler {
    * @private
    */
   buildSamplers() {
-    this.cellSamplers = this.cellSamplers || [];
+    this.cellSamplers = []; // this.cellSamplers || [];
 
     const hw = (this.w / 2) | 0;
     const hh = (this.h / 2) | 0;
@@ -69,17 +68,15 @@ class MultiSampler {
     for (var i = this.cellSamplers.length - 1; i >= 0; i--) {
       const cur = this.cellSamplers[i];
       if (cur.x < -hw || cur.x >= hw || cur.y < -hh || cur.y >= hh) {
-        this.cellSamplers[i].getPoints(0).forEach(p => {
-          const index = this.points.findIndex(
-            x => x[0] === p[0] && x[1] === p[1]
-          );
-          this.points.splice(index, 1);
-        });
         this.cellSamplers.splice(i, 1);
       }
     }
 
-    this.dirty = true;
+    this.points = this.points.filter(p => {
+      return p[0] > -hw && p[0] < hw && p[1] > -hh && p[1] < hh;
+    });
+
+    this.prePopulate(this.points);
   }
 
   /**
@@ -158,7 +155,6 @@ class MultiSampler {
     this.h = h;
 
     this.buildSamplers();
-    this.dirty = true;
   }
 
   /**
