@@ -1,5 +1,12 @@
+## 0.11.0 (2018-07-18)
+
+* Add ability to remove point by array or x,y) ([8219312](https://github.com/vantreeseba/poisson-sampler/commit/8219312))
+
+
+
 ## 0.10.0 (2018-07-18)
 
+* 0.10.0 ([8308f68](https://github.com/vantreeseba/poisson-sampler/commit/8308f68))
 * Optimize random sampler and multi sampler ([6f57ed7](https://github.com/vantreeseba/poisson-sampler/commit/6f57ed7))
 
 
