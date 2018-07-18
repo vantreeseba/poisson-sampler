@@ -1,5 +1,12 @@
+## 0.9.0 (2018-07-18)
+
+* Change default attempts in random sampler ([85368df](https://github.com/vantreeseba/poisson-sampler/commit/85368df))
+
+
+
 ## 0.8.0 (2018-07-16)
 
+* 0.8.0 ([ee0abfc](https://github.com/vantreeseba/poisson-sampler/commit/ee0abfc))
 * Change how resize / building samplers work to prevent overlaps ([3c4c5dc](https://github.com/vantreeseba/poisson-sampler/commit/3c4c5dc))
 
 
