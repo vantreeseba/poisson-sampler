@@ -69,7 +69,7 @@ class RandomSampler {
   run() {
     let kk = 0;
     let cc = this.cellSize * 0.7;
-    while (kk < 100) {
+    while(kk < 10) {
       let x = cc + (this.rng.random() * (this.w - (cc * 2)));
       let y = cc + (this.rng.random() * (this.h - (cc * 2)));
       kk++;
