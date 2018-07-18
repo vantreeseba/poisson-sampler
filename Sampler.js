@@ -181,10 +181,15 @@ class PoissonDiscSampler {
    * @param {Number} y The y coord.
    */
   remove(x, y) {
-    if(x <= this.x || y <= this.y || x > this.x + this.w || y > this.y + this.h){
+    let px = x, py = y;
+    if(x instanceof Array) {
+      px = x[0];
+      py = x[1];
+    }
+    if(px < this.x || py < this.y || px > this.x + this.w || py > this.y + this.h){
       return;
     }
-    const index = this.xyToIndex(x - this.x, y - this.y);
+    const index = this.xyToIndex(px - this.x, py - this.y);
     if(!this.grid[index]) {
       return;
     }

@@ -128,8 +128,21 @@ module.exports = {
         const points2 = sampler.getPoints();
         const index = points2.findIndex(x => x[0] === p[0] && x[1] === p[1]);
 
+        assert.equal(index, -1);
+      },
+      'should remove point as array from sampler': () => {
+        const sampler = new Sampler();
+        const points = sampler.getPoints();
+        const p = points[0];
+
+        sampler.remove(p);
+
+        const points2 = sampler.getPoints();
+        const index = points2.findIndex(x => x[0] === p[0] && x[1] === p[1]);
+
         assert.equal(-1, index);
       }
+
     }
   },
 };

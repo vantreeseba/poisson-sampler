@@ -174,9 +174,14 @@ class MultiSampler {
    * @param {Number} y The y coord.
    */
   remove(x, y) {
-    const index = this.points.findIndex(p => p[0] === x && p[1] === y);
+    let px = x, py = y;
+    if(x instanceof Array) {
+      px = x[0];
+      py = x[1];
+    }
+    const index = this.points.findIndex(p => p[0] === px && p[1] === py);
     this.points.splice(index, 1);
-    this.cellSamplers.forEach(s => s.remove(x, y));
+    this.cellSamplers.forEach(s => s.remove(px, py));
   }
 }
 module.exports = MultiSampler;
