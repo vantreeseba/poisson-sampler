@@ -1,5 +1,12 @@
+## 0.10.0 (2018-07-18)
+
+* Optimize random sampler and multi sampler ([6f57ed7](https://github.com/vantreeseba/poisson-sampler/commit/6f57ed7))
+
+
+
 ## 0.9.0 (2018-07-18)
 
+* 0.9.0 ([bdc81d1](https://github.com/vantreeseba/poisson-sampler/commit/bdc81d1))
 * Change default attempts in random sampler ([85368df](https://github.com/vantreeseba/poisson-sampler/commit/85368df))
 
 
