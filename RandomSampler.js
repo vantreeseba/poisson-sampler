@@ -51,9 +51,10 @@ class RandomSampler {
    * @param {Number} The number of new points desired.
    * @return {Array} An array of points.
    */
-  getNewPoints(num = 0) {
+  getNewPoints(num = 1) {
     const maxPoints = num || this.gridHeight * this.gridWidth;
     const newPoints = [];
+    
     for (var i = 0; i < maxPoints; i++) {
       let s = this.run();
       if (s) {

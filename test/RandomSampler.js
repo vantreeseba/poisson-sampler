@@ -11,8 +11,8 @@ module.exports = {
       assert.isAtLeast(points.length, 1);
     },
     'Should not die when huge': () => {
-      const sampler = new Sampler({h: 47000, w:47000, r: 1000});
-      const points = sampler.getPoints();
+      const sampler = new Sampler({h: 24576, w:24576, r: 1024});
+      const points = sampler.getPoints(1000);
 
       assert.isAtLeast(points.length, 1);
     },

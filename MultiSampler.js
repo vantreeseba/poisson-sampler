@@ -99,25 +99,25 @@ class MultiSampler {
    */
   getNewPoints(num = 1) {
     let newPoints = [];
-    for (var i = 0; i < num; i++) {
-      let point;
-      this.cellSamplers
-        .sort(() => {
-          return Math.random() - 0.5;
-        })
-        .some(s => {
-          point = s.getNewPoints(1);
-          if (point.length > 0 && point[0]) {
-            return true;
-          }
+    this.cellSamplers = this.cellSamplers
+      .sort(() => {
+        return Math.random() - 0.5;
+      });
 
-          return false;
-        });
-      if (point[0]) {
-        newPoints.push(point[0]);
-        this.points.push(point[0]);
+    let sIndex = 0;
+    let perSamp = Math.ceil(num / this.cellSamplers.length);
+
+    for (var i = 0; i < num; i++) {
+      if(sIndex >= this.cellSamplers.length) {
+        sIndex = 0;
+      }
+      let points = this.cellSamplers[sIndex++].getNewPoints(perSamp);
+      for(var j = 0; j < points.length; j++){
+        newPoints.push(points[j]);
+        this.points.push(points[j]);
       }
     }
+
     return newPoints;
   }
 

@@ -14,6 +14,12 @@ module.exports = {
 
       assert.isAtLeast(sampler.cellSamplers.length, 16);
     },
+    'Should not die when huge' : () => {
+      const sampler = new Sampler({w: 24576, h: 24576, cw: 2048, ch: 2048, r:1024, random: true});
+      const points = sampler.getNewPoints(2000);
+
+      assert.isAtLeast(points.length, 200);
+    },
     'getPoints': {
       'Should return an array of all points.': () => {
         const sampler = new Sampler();
