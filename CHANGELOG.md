@@ -1,5 +1,12 @@
+## 0.12.0 (2018-07-27)
+
+* Add webpack build and dist for browser ([29d06ed](https://github.com/vantreeseba/poisson-sampler/commit/29d06ed))
+
+
+
 ## 0.11.0 (2018-07-18)
 
+* 0.11.0 ([ba8d90c](https://github.com/vantreeseba/poisson-sampler/commit/ba8d90c))
 * Add ability to remove point by array or x,y) ([8219312](https://github.com/vantreeseba/poisson-sampler/commit/8219312))
 
 

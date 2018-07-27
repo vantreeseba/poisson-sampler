@@ -1,6 +1,6 @@
 {
   "name": "infinite-poisson-disc-sampler",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "",
   "main": "index.js",
   "browser": "dist/index.js",
