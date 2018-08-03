@@ -1,5 +1,12 @@
+## <small>0.13.1 (2018-08-03)</small>
+
+* Remove dist/webpack from tests ([0e03d59](https://github.com/vantreeseba/poisson-sampler/commit/0e03d59))
+
+
+
 ## 0.13.0 (2018-08-03)
 
+* 0.13.0 ([30e413d](https://github.com/vantreeseba/poisson-sampler/commit/30e413d))
 * Add exports ([fc49326](https://github.com/vantreeseba/poisson-sampler/commit/fc49326))
 * Add library expose to webpack ([d70073f](https://github.com/vantreeseba/poisson-sampler/commit/d70073f))
 
