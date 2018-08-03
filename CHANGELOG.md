@@ -1,5 +1,13 @@
+## 0.13.0 (2018-08-03)
+
+* Add exports ([fc49326](https://github.com/vantreeseba/poisson-sampler/commit/fc49326))
+* Add library expose to webpack ([d70073f](https://github.com/vantreeseba/poisson-sampler/commit/d70073f))
+
+
+
 ## 0.12.0 (2018-07-27)
 
+* 0.12.0 ([7e9bbd0](https://github.com/vantreeseba/poisson-sampler/commit/7e9bbd0))
 * Add webpack build and dist for browser ([29d06ed](https://github.com/vantreeseba/poisson-sampler/commit/29d06ed))
 
 
