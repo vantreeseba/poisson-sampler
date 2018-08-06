@@ -1,5 +1,11 @@
+## <small>0.13.2 (2018-08-06)</small>
+
+
+
+
 ## <small>0.13.1 (2018-08-03)</small>
 
+* 0.13.1 ([6a15af1](https://github.com/vantreeseba/poisson-sampler/commit/6a15af1))
 * Remove dist/webpack from tests ([0e03d59](https://github.com/vantreeseba/poisson-sampler/commit/0e03d59))
 
 
