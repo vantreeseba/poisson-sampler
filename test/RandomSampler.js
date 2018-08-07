@@ -12,7 +12,7 @@ module.exports = {
     },
     'Should not die when huge': () => {
       const sampler = new Sampler({h: 24576, w:24576, r: 1024});
-      const points = sampler.getPoints(1000);
+      const points = sampler.getPoints(10000);
 
       assert.isAtLeast(points.length, 1);
     },
@@ -47,7 +47,6 @@ module.exports = {
       const h = 512;
       const w = 512;
       const sampler = new Sampler({h, w, r, x:0, y:0});
-      sampler.rng.init_seed(Math.random() * 5000);
       const points = sampler.getPoints(500);
       let allGood = true;
 
@@ -97,10 +96,10 @@ module.exports = {
         const sampler = new Sampler({h: 800, w: 800, r});
         const points = sampler.getPoints();
 
-        sampler.remove(-5000, -5090);
-        const points2 = sampler.getPoints();
+        sampler.remove(-5000, -5000);
+        const points2 = sampler.getPoints(-1);
 
-        assert.isTrue(points.length < points2.length);
+        assert.equal(points.length, points2.length);
 
       },
       'calling on point that doesnt exist should do nothing' : () => {
