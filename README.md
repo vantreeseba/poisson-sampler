@@ -2,7 +2,7 @@
 
 A poisson disc sampler implementation.
 
-[Example Codepen](https://codepen.io/vantreeseba/pen/gKbRYx)
+[Example Codepen](https://codepen.io/vantreeseba/pen/jKRwqX)
 
 ## Classes
 

@@ -1,5 +1,13 @@
+## <small>0.13.3 (2018-08-09)</small>
+
+* Fix link to example ([423c11f](https://github.com/vantreeseba/poisson-sampler/commit/423c11f))
+* Fix some tests ([da6e826](https://github.com/vantreeseba/poisson-sampler/commit/da6e826))
+
+
+
 ## <small>0.13.2 (2018-08-06)</small>
 
+* 0.13.2 ([a5935b8](https://github.com/vantreeseba/poisson-sampler/commit/a5935b8))
 
 
 
