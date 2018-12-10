@@ -96,6 +96,38 @@ module.exports = {
         assert.equal(sampler.cellSamplers.length, 4);
         assert.notEqual(beforeLength, afterLength);
       },
+      'should keep same points as before when growing': () => {
+        const sampler = new Sampler({w: 32, h: 32, cw: 16, ch: 16, r: 4});
+        sampler.getNewPoints(500);
+        const before = sampler.getPoints(-1);
+
+        sampler.resize(64, 64);
+        const after = sampler.getPoints(-1);
+
+        assert.deepEqual(before, after);
+      },
+      'should keep same points as before when shrinking': () => {
+        const sampler = new Sampler({w: 64, h: 64, cw: 16, ch: 16, r: 4});
+
+        sampler.getNewPoints(500);
+        sampler.resize(128, 128);
+        sampler.getNewPoints(500);
+        sampler.resize(512, 512);
+        sampler.getNewPoints(500);
+        sampler.resize(256, 256);
+        const before = sampler.getPoints(-1);
+
+        const filtered = before.filter(p => {
+          return p[0] > -16 && p[1] > -16 && p[0] < 16 && p[1] < 16;
+        });
+
+        sampler.resize(32, 32);
+        const after = sampler.getPoints(-1);
+
+        assert.equal(filtered.length, after.length);
+        assert.deepEqual(filtered, after);
+      }
+
     },
     'prePopulate': {
       'should seed the sampler with given points': () => {

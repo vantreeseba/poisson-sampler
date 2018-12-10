@@ -36,6 +36,7 @@ class MultiSampler {
 
     this.samplerConstructor = useRandom ? RandomSampler : Sampler;
 
+    this.cellSamplers = [];
     this.buildSamplers();
   }
 
@@ -44,8 +45,6 @@ class MultiSampler {
    * @private
    */
   buildSamplers() {
-    this.cellSamplers = []; // this.cellSamplers || [];
-
     const hw = (this.w / 2) | 0;
     const hh = (this.h / 2) | 0;
 
