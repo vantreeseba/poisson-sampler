@@ -179,8 +179,10 @@ class MultiSampler {
       py = x[1];
     }
     const index = this.points.findIndex(p => p[0] === px && p[1] === py);
-    this.points.splice(index, 1);
-    this.cellSamplers.forEach(s => s.remove(px, py));
+    if(index !== -1) {
+      this.points.splice(index, 1);
+    }
+    return this.cellSamplers.some(s => s.remove(px, py));
   }
 }
 module.exports = MultiSampler;

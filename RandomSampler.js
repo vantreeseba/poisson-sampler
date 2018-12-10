@@ -162,13 +162,15 @@ class RandomSampler {
       py = x[1];
     }
     if(px < this.x || py < this.y || px > this.x + this.w || py > this.y + this.h){
-      return;
+      return false;
     }
     const index = this.xyToIndex(px - this.x, py - this.y);
     if(!this.grid[index]) {
-      return;
+      return false;
     }
     delete this.grid[index];
+
+    return true;
   }
 
   /**
