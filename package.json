@@ -1,10 +1,10 @@
 {
   "name": "infinite-poisson-disc-sampler",
-  "version": "0.13.3",
+  "version": "0.13.4",
   "description": "",
   "author": "vantreeseba@gmail.com",
   "license": "MIT",
-  "repository": "github:vantreeseba/poisson-sampler", 
+  "repository": "github:vantreeseba/poisson-sampler",
   "main": "index.js",
   "browser": "dist/index.js",
   "dependencies": {

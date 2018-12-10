@@ -1,5 +1,13 @@
+## <small>0.13.4 (2018-12-10)</small>
+
+* Fix issue on removal ([910cbb0](https://github.com/vantreeseba/poisson-sampler/commit/910cbb0))
+* more tests around changing size ([af1668d](https://github.com/vantreeseba/poisson-sampler/commit/af1668d))
+
+
+
 ## <small>0.13.3 (2018-08-09)</small>
 
+* 0.13.3 ([e1deb4f](https://github.com/vantreeseba/poisson-sampler/commit/e1deb4f))
 * Fix link to example ([423c11f](https://github.com/vantreeseba/poisson-sampler/commit/423c11f))
 * Fix some tests ([da6e826](https://github.com/vantreeseba/poisson-sampler/commit/da6e826))
 
