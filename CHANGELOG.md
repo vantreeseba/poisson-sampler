@@ -1,5 +1,12 @@
+## 0.14.0 (2018-12-18)
+
+* Remove self points array from multisampler to simplify ([cb970e3](https://github.com/vantreeseba/poisson-sampler/commit/cb970e3))
+
+
+
 ## <small>0.13.4 (2018-12-10)</small>
 
+* 0.13.4 ([d3bf896](https://github.com/vantreeseba/poisson-sampler/commit/d3bf896))
 * Fix issue on removal ([910cbb0](https://github.com/vantreeseba/poisson-sampler/commit/910cbb0))
 * more tests around changing size ([af1668d](https://github.com/vantreeseba/poisson-sampler/commit/af1668d))
 
