@@ -31,9 +31,6 @@ class MultiSampler {
     this.ch = ch || 32;
     this.r = r;
 
-    this.points = [];
-    this.dirty = true;
-
     this.samplerConstructor = useRandom ? RandomSampler : Sampler;
 
     this.cellSamplers = [];
@@ -47,6 +44,8 @@ class MultiSampler {
   buildSamplers() {
     const hw = (this.w / 2) | 0;
     const hh = (this.h / 2) | 0;
+
+    const points = this.getPoints(-1);
 
     for (let x = -hw; x < hw; x += this.cw) {
       for (let y = -hh; y < hh; y += this.ch) {
@@ -71,11 +70,7 @@ class MultiSampler {
       }
     }
 
-    this.points = this.points.filter(p => {
-      return p[0] > -hw && p[0] < hw && p[1] > -hh && p[1] < hh;
-    });
-
-    this.prePopulate(this.points);
+    this.prePopulate(points);
   }
 
   /**
@@ -83,13 +78,9 @@ class MultiSampler {
    * @return {Array} The array of points.
    */
   getPoints(num = 0) {
-    if(this.dirty) {
-      this.dirty = false;
-      this.points = this.cellSamplers
-        .map(s => s.getPoints(num/this.cellSamplers.length))
-        .reduce((arr, cur) => arr.concat(cur), []);
-    }
-    return this.points;
+    return this.cellSamplers
+      .map(s => s.getPoints(num/this.cellSamplers.length))
+      .reduce((arr, cur) => arr.concat(cur), []);
   }
 
   /**
@@ -113,7 +104,6 @@ class MultiSampler {
       let points = this.cellSamplers[sIndex++].getNewPoints(perSamp);
       for(var j = 0; j < points.length; j++){
         newPoints.push(points[j]);
-        this.points.push(points[j]);
       }
     }
 
@@ -138,7 +128,6 @@ class MultiSampler {
         y
       });
       this.cellSamplers.push(sampler);
-      this.points.push(sampler.getPoints());
     }
 
     return sampler.getPoints();
@@ -174,13 +163,9 @@ class MultiSampler {
    */
   remove(x, y) {
     let px = x, py = y;
-    if(x instanceof Array) {
+    if(x instanceof Array || (x[0] && x[1])) {
       px = x[0];
       py = x[1];
-    }
-    const index = this.points.findIndex(p => p[0] === px && p[1] === py);
-    if(index !== -1) {
-      this.points.splice(index, 1);
     }
     return this.cellSamplers.some(s => s.remove(px, py));
   }

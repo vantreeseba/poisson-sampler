@@ -170,7 +170,7 @@ class RandomSampler {
     }
     delete this.grid[index];
 
-    return true;
+    return [px, py];
   }
 
   /**
