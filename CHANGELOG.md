@@ -1,5 +1,12 @@
+## <small>0.14.1 (2018-12-20)</small>
+
+* Fix test ([c2fefd2](https://github.com/vantreeseba/poisson-sampler/commit/c2fefd2))
+
+
+
 ## 0.14.0 (2018-12-18)
 
+* 0.14.0 ([abd55b7](https://github.com/vantreeseba/poisson-sampler/commit/abd55b7))
 * Remove self points array from multisampler to simplify ([cb970e3](https://github.com/vantreeseba/poisson-sampler/commit/cb970e3))
 
 
