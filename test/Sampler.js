@@ -71,20 +71,17 @@ module.exports = {
       const r = 100;
       const sampler = new Sampler({h: 800, w: 800, r});
       const points = sampler.getPoints();
-      let allGood = true;
 
       points.forEach(p => {
         points.forEach(p2 => {
           if(p !== p2) {
-            if (distanceFrom(p[0], p[1], p2[0], p2[1]) < r) {
-              allGood = false;
-            }
+            assert.isAtLeast(distanceFrom(p[0], p[1], p2[0], p2[1]), r -1);
           }
         });
       });
 
 
-      assert.isTrue(allGood);
+      // assert.isTrue(allGood);
       assert.isAtLeast(points.length, 20);
     },
 
@@ -98,20 +95,15 @@ module.exports = {
           sampler.remove(x[0], x[1]);
         }
       });
-      let allGood = true;
 
       points.forEach(p => {
         points.forEach(p2 => {
           if(p !== p2) {
-            if (distanceFrom(p[0], p[1], p2[0], p2[1]) < r) {
-              allGood = false;
-            }
+            assert.isAtLeast(distanceFrom(p[0], p[1], p2[0], p2[1]), r -1);
           }
         });
       });
 
-
-      assert.isTrue(allGood);
       assert.isAtLeast(points.length, 20);
     },
     'Prepopulate should seed the sampler with existing points': () => {
@@ -121,19 +113,15 @@ module.exports = {
       const sampler = new Sampler({h: 800, w: 800, r});
       sampler.prePopulate(prepoints);
       const points = sampler.getPoints();
-      let allGood = true;
 
       points.forEach(p => {
         points.forEach(p2 => {
           if(p !== p2) {
-            if (distanceFrom(p.x, p.y, p2.x, p2.y) < r) {
-              allGood = false;
-            }
+            assert.isAtLeast(distanceFrom(p[0], p[1], p2[0], p2[1]), r -1 );
           }
         });
       });
 
-      assert.isTrue(allGood);
       assert.isAtLeast(points.length, 20);
       assert.isOk(points.find(p => p[0] === prepoints[0].x && p[1] === prepoints[0].y));
     },
@@ -144,19 +132,15 @@ module.exports = {
       const sampler = new Sampler({h: 800, w: 800, r});
       sampler.prePopulate(prepoints);
       const points = sampler.getPoints();
-      let allGood = true;
 
       points.forEach(p => {
         points.forEach(p2 => {
           if(p !== p2) {
-            if (distanceFrom(p.x, p.y, p2.x, p2.y) < r) {
-              allGood = false;
-            }
+            assert.isAtLeast(distanceFrom(p[0], p[1], p2[0], p2[1]), r - 1);
           }
         });
       });
 
-      assert.isTrue(allGood);
       assert.isAtLeast(points.length, 20);
       assert.isUndefined(points.find(p => p[0] === prepoints[0].x && p[1] === prepoints[0].y));
     }

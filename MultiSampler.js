@@ -102,9 +102,10 @@ class MultiSampler {
         sIndex = 0;
       }
       let points = this.cellSamplers[sIndex++].getNewPoints(perSamp);
-      for(var j = 0; j < points.length; j++){
-        newPoints.push(points[j]);
-      }
+      // for(var j = 0; j < points.length; j++){
+        // newPoints.push(points[j]);
+      // }
+      newPoints = newPoints.concat(points);
     }
 
     return newPoints;

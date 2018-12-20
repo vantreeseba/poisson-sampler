@@ -162,6 +162,8 @@ class PoissonDiscSampler {
    * @return {Object} The point sampled.
    */
   sample(x, y) {
+    x = Math.round(x);
+    y = Math.round(y);
     if (this.grid[this.xyToIndex(x, y)]) {
       return;
     }

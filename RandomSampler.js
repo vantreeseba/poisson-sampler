@@ -140,12 +140,14 @@ class RandomSampler {
    * @return {Object} The point sampled.
    */
   sample(x, y) {
+    x = Math.round(x);
+    y = Math.round(y);
     let index = this.xyToIndex(x, y);
     if (this.grid[index]) {
       return;
     }
-
-    return (this.grid[index] = [x, y]);
+    this.grid[index] = [x, y];
+    return this.grid[index];
   }
 
   /**
