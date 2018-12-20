@@ -1,5 +1,11 @@
+## 0.15.0 (2018-12-20)
+
+
+
+
 ## <small>0.14.1 (2018-12-20)</small>
 
+* 0.14.1 ([275efdd](https://github.com/vantreeseba/poisson-sampler/commit/275efdd))
 * Fix test ([c2fefd2](https://github.com/vantreeseba/poisson-sampler/commit/c2fefd2))
 
 
